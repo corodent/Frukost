@@ -1,0 +1,52 @@
+.bubble-header {
+  border: 1px solid #ccc;
+  background-color: red;
+}
+
+.bubble-header ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  color: white;
+}
+
+.bubble-header li {
+  float: left;
+  display: block;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.bubble-header li:hover {
+  background-color: #111;
+}
+
+.bubble-header #bubble-selector {
+  float: right;
+  display: block;
+}
+
+.bubble-header select {
+  border-radius: 4px;
+  font-size: 16px;
+  font-family: sans-serif;
+}
+
+.green-bg {
+  background-color: green;
+}
+
+.red-bg {
+  background-color: red;
+}
+
+.blue-bg {
+  background-color: blue;
+}
+
+.active {
+  color: black;
+  background-color: white;
+}
