@@ -8,6 +8,7 @@ class MenuOption extends Component {
       <div className="menu-option">
         <img src={`images/${option.image}`} alt={option.name} height="100" width="100" />
         <p>{ option.name }</p>
+        <input type="checkbox" />
       </div>
     );
   }
@@ -34,7 +35,7 @@ export default class Menu extends Component {
   render() {
     const { currentBubble } = this.props;
     return (
-      <div>
+      <div className="menu-container">
       {
         menuItems.map( (item) => {
           return(
