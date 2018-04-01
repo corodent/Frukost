@@ -36,7 +36,6 @@ export default class BubbleHeader extends Component {
       color: "blue-bg",
     }];
 
-
     const listItems = bubbles[currentBubble].rooms.map( ( bbl => {
       var i = 0;
       return (bbl) => {
