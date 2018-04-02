@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 import BubbleHeader from './components/BubbleHeader';
+import {
+  handleClientLoad,
+} from './model/Spreadsheet'
 import Menu from './components/Menu';
 
 class App extends Component {
@@ -12,6 +15,13 @@ class App extends Component {
     };
     this.onUpdateCurrentBubble = this.onUpdateCurrentBubble.bind(this);
     this.onUpdateCurrentRoom = this.onUpdateCurrentRoom.bind(this);
+  }
+
+  componentDidMount() {
+    const script = document.createElement("script");
+    script.src = "https://apis.google.com/js/api.js";
+    script.onload = handleClientLoad;
+    document.body.appendChild(script);
   }
 
   onUpdateCurrentBubble(bubble) {
