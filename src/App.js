@@ -3,6 +3,7 @@ import './App.css';
 import BubbleHeader from './components/BubbleHeader';
 import {
   handleClientLoad,
+  testSheet,
 } from './model/Spreadsheet'
 import Menu from './components/Menu';
 
@@ -15,6 +16,7 @@ class App extends Component {
     };
     this.onUpdateCurrentBubble = this.onUpdateCurrentBubble.bind(this);
     this.onUpdateCurrentRoom = this.onUpdateCurrentRoom.bind(this);
+    this.onItemChanged = this.onItemChanged.bind(this);
   }
 
   componentDidMount() {
@@ -36,6 +38,11 @@ class App extends Component {
     });
   }
 
+  onItemChanged(item, option, event) {
+    console.log(`onItemChanged: ${item.name} ${option.name} ${event.target.checked}`);
+    //testSheet();
+  }
+
   render() {
     return (
       <div className="App">
@@ -47,6 +54,7 @@ class App extends Component {
         />
         <Menu
           currentBubble={this.state.currentBubble}
+          onItemChanged={this.onItemChanged}
         />
       </div>
     );

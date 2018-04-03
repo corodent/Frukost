@@ -1,4 +1,5 @@
-- update the pictures for the new ones the girls did
+x - update the pictures for the new ones the girls did
 - hook up to Google Sheets
 - Add the rensa button
-- Add the dot indicator in the tab for the "ready field"
+- Klar: Add the dot indicator in the tab for the "ready field"
+- Add the Kommentar field

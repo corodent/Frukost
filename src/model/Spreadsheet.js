@@ -1,6 +1,5 @@
 // Client ID and API key from the Developer Console
 var CLIENT_ID = '542434086778-e1uvvh9rdq8c21si7p2d81tech4pahei.apps.googleusercontent.com';
-//var CLIENT_ID = '542434086778-03kj94o9v8u3lngl8p3p2ir5c347137r.apps.googleusercontent.com';
 var API_KEY = 'AIzaSyApd6eBtkhR5O3dlFj_5El6VmySAIic9e0';
 
 // Array of API discovery doc URLs for APIs used by the quickstart
@@ -8,7 +7,13 @@ var DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"
 
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
-var SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
+var SCOPES = "https://www.googleapis.com/auth/spreadsheets";
+
+// Copy of Digital Breakfastlist WIP in my Google Drive
+const SPREADSHEET_ID = '1NpGatbVywS9VuF_1KkRXcjVYhw3z6QnGZ5uApu9j_kY';
+const GREEN_SHEET_ID = 0;
+const BLUE_SHEET_ID  = 289210114;
+const RED_SHEET_ID   = 717808041;
 
 /**
  *  On load, called to load the auth2 library and API client library.
@@ -49,6 +54,46 @@ function updateSigninStatus(isSignedIn) {
   }
 }
 
+function testSheet1() {
+  window.gapi.client.sheets.spreadsheets.values.get({
+    spreadsheetId: SPREADSHEET_ID,
+    range: 'Grön!A1:A23',
+  }).then(function(response) {
+    var range = response.result;
+    if (range.values.length > 0) {
+      for( var i = 0; i < range.values.length; i++) {
+        var row = range.values[i];
+        // Print columns A and E, which correspond to indices 0 and 4.
+        console.log(`row ${i} ${row}`);
+      }
+    } else {
+      console.log('No data found.');
+    }
+  }, function(response) {
+    console.log('Error: ' + response.result.error.message);
+  });
+}
+
+function testSheet() {
+  const params = {
+    spreadsheetId: SPREADSHEET_ID,
+    range: 'Grön!B4:B4',
+    valueInputOption: "USER_ENTERED",
+  };
+  const valueRangeBody = {
+    range: 'Grön!B4:B4',
+    majorDimension: "ROWS",
+    values: [['✔']],
+  };
+  window.gapi.client.sheets.spreadsheets.values.update(params, valueRangeBody)
+  .then(function(response) {
+    console.log(response);
+  }, function(response) {
+    console.log('Error: ' + response.result.error.message);
+  });
+}
+
+
 /**
  *  Sign in the user upon button click.
  */
@@ -64,8 +109,6 @@ function handleSignoutClick(event) {
 }
 
 export {
-  handleAuthClick,
-  handleSignoutClick,
-  initClient,
   handleClientLoad,
+  testSheet
 }
