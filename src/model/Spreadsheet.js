@@ -120,6 +120,5 @@ function updateValue( bubble, room, item, option, enabled ) {
 
 export {
   handleClientLoad,
-  testSheet,
   updateValue
 }
