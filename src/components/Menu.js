@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Menu.css';
+import { menuItems } from '../model/Model';
 
 class MenuOption extends Component {
   render() {
@@ -18,10 +19,6 @@ class MenuOption extends Component {
 }
 
 class MenuItem extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   onItemChanged( item, option, event ) {
     console.log( `MenuItem: ${item.name} ${option.name}`);
     this.props.onItemChanged( item, option, event );
@@ -34,7 +31,7 @@ class MenuItem extends Component {
         (option => {
           var i = 0;
           return option => {
-            return <MenuOption optionid={i++} option={option} onItemChanged={this.onItemChanged.bind(this,item,option)} />;
+            return <MenuOption key={i} optionid={i++} option={option} onItemChanged={this.onItemChanged.bind(this,item,option)} />;
           }
       })()
     );
@@ -47,7 +44,6 @@ class MenuItem extends Component {
     );
   }
 }
-
 
 export default class Menu extends Component {
   render() {
@@ -66,130 +62,3 @@ export default class Menu extends Component {
     );
   }
 }
-
-const mackaOptions = [{
-  name: "Hård Bröd",
-  image: "hardbread.jpg",
-},
-{
-  name: "Mjuk Bröd",
-  image: "softbread.jpg",
-},
-{
-  name: "Ost",
-  image: "ost.jpg",
-},
-{
-  name: "Skinka",
-  image: "skinka.jpg",
-},
-{
-  name: "Grönt",
-  image: "veg.jpg",
-}];
-
-const yogiOptions = [
-  {
-    name: "Lingonsylt",
-    image: "lingonjam.jpg",
-  },
-  {
-    name: "Äppelmos",
-    image: "appelmos.jpg",
-  },
-  {
-    name: "Jordgubbsylt",
-    image: "strawberryjam.jpg",
-  },
-  {
-    name: "Socker",
-    image: "socker.jpg",
-  },
-];
-
-const coffeeOptions = [
-  {
-    name: "Socker",
-    image: "socker.jpg",
-  },
-  {
-    name: "Honung",
-    image: "honey.jpg",
-  },
-  {
-    name: "Mjölk",
-    image: "milk.jpg",
-  },
-  {
-    name: "Sukketter",
-    image: "suketter.jpg",
-  },
-];
-
-const menuItems = [
-  {
-    name: "Macka 1",
-    image: "macka.jpg",
-    options: mackaOptions,
-  },
-  {
-    name: "Macka 2",
-    image: "macka.jpg",
-    options: mackaOptions,
-  },
-  {
-    name: "Fil",
-    image: "filmilk.jpg",
-    options: yogiOptions,
-  },
-  {
-    name: "Yogurt",
-    image: "yoghurt.jpg",
-    options: yogiOptions,
-  },
-  {
-    name: "Gröt",
-    image: "grot.jpg",
-    options: yogiOptions,
-  },
-  {
-    name: "Flingor",
-    image: "flingor.jpg",
-  },
-  {
-    name: "Müesli",
-    image: "musli.jpg",
-  },
-  {
-    name: "Ägg",
-    image: "egg.jpg",
-    options: [
-      {
-        name: "Kaviar",
-        image: "kaviar.jpg",
-      },
-      {
-        name: "Salt",
-        image: "salt.jpg",
-      }
-    ],
-  },
-  {
-    name: "Juice",
-    image: "juice.jpg",
-  },
-  {
-    name: "Näringsdryck",
-    image: "fortimelenergy_choklad.jpg",
-  },
-  {
-    name: "Kaffe",
-    image: "kaffe.jpg",
-    options: coffeeOptions,
-  },
-  {
-    name: "Te",
-    image: "te.jpg",
-    options: coffeeOptions,
-  },
-];

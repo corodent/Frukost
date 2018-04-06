@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './BubbleHeader.css';
+import { bubbles } from '../model/Model';
 
 export default class BubbleHeader extends Component {
   constructor(props) {
@@ -19,22 +20,6 @@ export default class BubbleHeader extends Component {
 
   render() {
     const { currentBubble, currentRoom } = this.props;
-    const bubbles = [
-    {
-      name: "Grön",
-      rooms: ["13", "14", "15", "16:1", "16:2", "17:1", "17:2", "17:3", "17 ÖB"],
-      color: "green-bg",
-    },
-    {
-      name: "Röd",
-      rooms: ["26", "27", "28", "29:1", "29:2", "30:1", "30:2", "30:3", "30 ÖB"],
-      color: "red-bg",
-    },
-    {
-      name: "Blå",
-      rooms: ["21:1", "21:2", "21:3", "22:1", "22:2", "23", "24", "25", "21 ÖB"],
-      color: "blue-bg",
-    }];
 
     const listItems = bubbles[currentBubble].rooms.map( ( bbl => {
       var i = 0;

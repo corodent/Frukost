@@ -1,3 +1,4 @@
+import { bubbles } from './Model';
 // Client ID and API key from the Developer Console
 var CLIENT_ID = '542434086778-e1uvvh9rdq8c21si7p2d81tech4pahei.apps.googleusercontent.com';
 var API_KEY = 'AIzaSyApd6eBtkhR5O3dlFj_5El6VmySAIic9e0';
@@ -11,9 +12,30 @@ var SCOPES = "https://www.googleapis.com/auth/spreadsheets";
 
 // Copy of Digital Breakfastlist WIP in my Google Drive
 const SPREADSHEET_ID = '1NpGatbVywS9VuF_1KkRXcjVYhw3z6QnGZ5uApu9j_kY';
+
+/*
 const GREEN_SHEET_ID = 0;
 const BLUE_SHEET_ID  = 289210114;
 const RED_SHEET_ID   = 717808041;
+*/
+
+const itemRowMap = {
+  'Macka 1': 2,
+  'Macka 2': 7,
+  'Fil': 12,
+  'Yogurt': 14,
+  'Gröt': 16,
+  'Flingor': 18,
+  'Müesli': 19,
+  'Ägg': 20,
+  'Juice': 22,
+  'Näringsdryck': 23,
+  'Kaffe': 24,
+  'Te': 27,
+};
+
+const TRUE_VALUE = '✔';
+const FALSE_VALUE = '✖';
 
 /**
  *  On load, called to load the auth2 library and API client library.
@@ -54,36 +76,17 @@ function updateSigninStatus(isSignedIn) {
   }
 }
 
-function testSheet1() {
-  window.gapi.client.sheets.spreadsheets.values.get({
-    spreadsheetId: SPREADSHEET_ID,
-    range: 'Grön!A1:A23',
-  }).then(function(response) {
-    var range = response.result;
-    if (range.values.length > 0) {
-      for( var i = 0; i < range.values.length; i++) {
-        var row = range.values[i];
-        // Print columns A and E, which correspond to indices 0 and 4.
-        console.log(`row ${i} ${row}`);
-      }
-    } else {
-      console.log('No data found.');
-    }
-  }, function(response) {
-    console.log('Error: ' + response.result.error.message);
-  });
-}
-
-function testSheet() {
+function updateCell( sheet, cell, value ) {
+  const range = `${sheet}!${cell}:${cell}`;
   const params = {
     spreadsheetId: SPREADSHEET_ID,
-    range: 'Grön!B4:B4',
+    range: range,
     valueInputOption: "USER_ENTERED",
   };
   const valueRangeBody = {
-    range: 'Grön!B4:B4',
+    range: range,
     majorDimension: "ROWS",
-    values: [['✔']],
+    values: [[value]],
   };
   window.gapi.client.sheets.spreadsheets.values.update(params, valueRangeBody)
   .then(function(response) {
@@ -93,22 +96,30 @@ function testSheet() {
   });
 }
 
+function updateValue( bubble, room, item, option, enabled ) {
+  const sheet = bubbles[bubble].name;
+  const column = String.fromCharCode( "B".charCodeAt(0) + room );
+  var row = itemRowMap[item.name];
+  console.log( `update ${sheet} ${column} ${row}`);
 
-/**
- *  Sign in the user upon button click.
- */
-function handleAuthClick(event) {
-  window.gapi.auth2.getAuthInstance().signIn();
-}
+  // item == option - use the item row -> checkbox or x
+  if( item===option ) {
+      const cell = column + row;
+      updateCell( sheet, cell, enabled ? TRUE_VALUE : FALSE_VALUE );
+  } else {
+    console.log( 'Not something I know how to deal with');
+  }
 
-/**
- *  Sign out the user upon button click.
- */
-function handleSignoutClick(event) {
-  window.gapi.auth2.getAuthInstance().signOut();
+  // Mackas - item row + 1 + option index -> checkbox or x
+  // Fil, Yogurt - item row + 1 -> set to option name
+  // Ägg -
+  // Kaffe, Te - option == milk - item row + 2 -> checkbox or x
+  //           - option != milk - item row + 2 -> set to option name
+
 }
 
 export {
   handleClientLoad,
-  testSheet
+  testSheet,
+  updateValue
 }

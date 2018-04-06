@@ -3,7 +3,7 @@ import './App.css';
 import BubbleHeader from './components/BubbleHeader';
 import {
   handleClientLoad,
-  testSheet,
+  updateValue,
 } from './model/Spreadsheet'
 import Menu from './components/Menu';
 
@@ -40,7 +40,13 @@ class App extends Component {
 
   onItemChanged(item, option, event) {
     console.log(`onItemChanged: ${item.name} ${option.name} ${event.target.checked}`);
-    //testSheet();
+    updateValue(
+      this.state.currentBubble,
+      this.state.currentRoom,
+      item,
+      option,
+      event.target.checked
+    );
   }
 
   render() {
