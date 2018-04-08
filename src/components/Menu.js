@@ -38,7 +38,9 @@ class MenuItem extends Component {
 
     return(
       <div className="menu-item">
-        <MenuOption option={item} onItemChanged={this.onItemChanged.bind(this,item,item)} />
+        {
+          item.hidden || <MenuOption option={item} onItemChanged={this.onItemChanged.bind(this,item,item)} />
+        }
         { options }
       </div>
     );

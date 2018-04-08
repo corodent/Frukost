@@ -75,16 +75,33 @@ const coffeeOptions = [
   },
 ];
 
+const drinkOptions = [
+  {
+    name: "Juice",
+    image: "juice.jpg",
+  },
+  {
+    name: "Näringsdryck",
+    image: "fortimelenergy_choklad.jpg",
+  },
+  {
+    name: "Saft",
+    image: "saft.jpg"
+  }
+];
+
 const menuItems = [
   {
     name: "Macka 1",
     image: "macka.jpg",
     options: mackaOptions,
+    hidden: true,
   },
   {
     name: "Macka 2",
     image: "macka.jpg",
     options: mackaOptions,
+    hidden: true,
   },
   {
     name: "Fil",
@@ -124,12 +141,10 @@ const menuItems = [
     ],
   },
   {
-    name: "Juice",
+    name: "Dryck",
     image: "juice.jpg",
-  },
-  {
-    name: "Näringsdryck",
-    image: "fortimelenergy_choklad.jpg",
+    options: drinkOptions,
+    hidden: true,
   },
   {
     name: "Kaffe",

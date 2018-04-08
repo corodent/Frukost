@@ -15,3 +15,7 @@
   font-size: 18px;
   padding: 10px;
 }
+
+.selected {
+  border: 3px solid #030303;
+}
