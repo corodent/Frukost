@@ -4,15 +4,15 @@ import { menuItems } from '../model/Model';
 
 class MenuOption extends Component {
   render() {
-    const { option, onItemChanged, id } = this.props;
+    const { option, onItemChanged, id, enabled } = this.props;
+    let clss = "menu-option";
+    if( enabled ) {
+      clss += " enabled";
+    }
     return(
-      <div className="menu-option" id={id}>
+      <div className={clss} id={id} onClick={onItemChanged}>
         <img src={`images/${option.image}`} alt={option.name} height="100" width="100" />
         <p>{ option.name }</p>
-        <input
-          type="checkbox"
-          onChange={onItemChanged}
-        />
       </div>
     );
   }
@@ -20,26 +20,33 @@ class MenuOption extends Component {
 
 class MenuItem extends Component {
   onItemChanged( item, option, event ) {
-    console.log( `MenuItem: ${item.name} ${option.name}`);
     this.props.onItemChanged( item, option, event );
   }
 
   render() {
-    const { item, onItemChanged } = this.props;
+    const { item, onItemChanged, orderOptions } = this.props;
     const options = item.options &&
       item.options.map(
         (option => {
           var i = 0;
           return option => {
-            return <MenuOption key={i} optionid={i++} option={option} onItemChanged={this.onItemChanged.bind(this,item,option)} />;
+            const enabled = (typeof orderOptions!=='undefined') && orderOptions[option.name]==true;
+            return <MenuOption
+                key={i}
+                optionid={i++}
+                option={option}
+                enabled={enabled}
+                onItemChanged={this.onItemChanged.bind(this,item,option)}
+              />;
           }
       })()
     );
+    const enabled = (typeof orderOptions!=='undefined') && orderOptions[item.name]==true;
 
     return(
       <div className="menu-item">
         {
-          item.hidden || <MenuOption option={item} onItemChanged={this.onItemChanged.bind(this,item,item)} />
+          item.hidden || <MenuOption option={item} onItemChanged={this.onItemChanged.bind(this,item,item)} enabled={enabled} />
         }
         { options }
       </div>
@@ -49,14 +56,14 @@ class MenuItem extends Component {
 
 export default class Menu extends Component {
   render() {
-    const { currentBubble, onItemChanged } = this.props;
-    console.log( "onItemChanged: " + onItemChanged );
+    const { currentBubble, onItemChanged, currentOrder } = this.props;
     return (
       <div className="menu-container">
       {
         menuItems.map( (item) => {
+          const options = currentOrder && currentOrder[item.name];
           return(
-            <MenuItem item={item} key={item.name} onItemChanged={onItemChanged}/>
+            <MenuItem item={item} key={item.name} orderOptions={options} onItemChanged={onItemChanged}/>
           );
         })
       }

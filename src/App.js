@@ -3,8 +3,11 @@ import './App.css';
 import BubbleHeader from './components/BubbleHeader';
 import {
   handleClientLoad,
-  updateValue,
-} from './model/Spreadsheet'
+  updateValue
+} from './model/Spreadsheet';
+import {
+  bubbles
+} from './model/Model'
 import Menu from './components/Menu';
 
 class App extends Component {
@@ -12,7 +15,8 @@ class App extends Component {
     super(props);
     this.state = {
       currentBubble: 0,
-      currentRoom: 1,
+      currentRoom: 0,
+      order: {}
     };
     this.onUpdateCurrentBubble = this.onUpdateCurrentBubble.bind(this);
     this.onUpdateCurrentRoom = this.onUpdateCurrentRoom.bind(this);
@@ -33,13 +37,29 @@ class App extends Component {
   }
 
   onUpdateCurrentRoom(room) {
-    this.setState({
-      currentRoom: room
-    });
+    this.setState({ currentRoom: room });
   }
 
   onItemChanged(item, option, event) {
-    console.log(`onItemChanged: ${item.name} ${option.name} ${event.target.checked}`);
+    this.setState( (prevState) => {
+      let { order, currentRoom, currentBubble } = prevState;
+      const roomName = bubbles[currentBubble].rooms[currentRoom];
+
+      if( typeof order[roomName]==='undefined' ) {
+        order[roomName]={};
+      }
+      if ( typeof order[roomName][item.name]==='undefined' ) {
+        order[roomName][item.name] = {};
+      }
+      let checked = order[roomName][item.name][option.name];
+      if( typeof checked==='undefined' ) {
+        checked = false;
+      }
+      order[roomName][item.name][option.name]=!checked;
+      return { order: order };
+    });
+
+    /*
     updateValue(
       this.state.currentBubble,
       this.state.currentRoom,
@@ -47,19 +67,24 @@ class App extends Component {
       option,
       event.target.checked
     );
+    */
   }
 
   render() {
+    const { currentBubble, currentRoom, order } = this.state;
+    const roomName = bubbles[currentBubble].rooms[currentRoom];
+
     return (
       <div className="App">
         <BubbleHeader
-          currentBubble={this.state.currentBubble}
-          currentRoom={this.state.currentRoom}
+          currentBubble={currentBubble}
+          currentRoom={currentRoom}
           onUpdateBubble={this.onUpdateCurrentBubble}
           onUpdateRoom={this.onUpdateCurrentRoom}
         />
         <Menu
-          currentBubble={this.state.currentBubble}
+          currentBubble={currentBubble}
+          currentOrder={order[roomName]}
           onItemChanged={this.onItemChanged}
         />
       </div>

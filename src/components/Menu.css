@@ -14,8 +14,9 @@
   text-align: center;
   font-size: 18px;
   padding: 10px;
+  border: 3px solid white;
 }
 
-.selected {
-  border: 3px solid #030303;
+.enabled {
+  border: 3px solid #010101;
 }
