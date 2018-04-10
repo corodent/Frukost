@@ -1,3 +1,4 @@
+- make the options horizontal layout and half height
 - add the order button
 - When order is complete on a room, make the tab a light shade of bubble color
 - Add the rensa button
@@ -10,5 +11,5 @@ x - hide the main items for the Mackas
 x - move the drinks to a single row
 x - Add Saft
 x - Put Juice, Näringsdryck and Saft in a row, but can select all 3
-x- Add Frame that changes color, nuke checks
+x - Add Frame that changes color, nuke checks
 x  - store state in the app object for all the menu items and options

@@ -54,6 +54,33 @@ const yogiOptions = [
     name: "Socker",
     image: "socker.jpg",
   },
+  {
+    name: "Flingor",
+    image: "flingor.jpg",
+  },
+  {
+    name: "Müesli",
+    image: "musli.jpg",
+  },
+];
+
+const grotOptions = [
+  {
+    name: "Lingonsylt",
+    image: "lingonjam.jpg",
+  },
+  {
+    name: "Äppelmos",
+    image: "appelmos.jpg",
+  },
+  {
+    name: "Jordgubbsylt",
+    image: "strawberryjam.jpg",
+  },
+  {
+    name: "Socker",
+    image: "socker.jpg",
+  }
 ];
 
 const coffeeOptions = [
@@ -116,16 +143,9 @@ const menuItems = [
   {
     name: "Gröt",
     image: "grot.jpg",
-    options: yogiOptions,
+    options: grotOptions,
   },
-  {
-    name: "Flingor",
-    image: "flingor.jpg",
-  },
-  {
-    name: "Müesli",
-    image: "musli.jpg",
-  },
+
   {
     name: "Ägg",
     image: "egg.jpg",

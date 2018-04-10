@@ -19,10 +19,6 @@
   text-decoration: none;
 }
 
-.bubble-header li:hover {
-  background-color: #111;
-}
-
 .bubble-header #bubble-selector {
   float: right;
   display: block;

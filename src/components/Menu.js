@@ -11,7 +11,7 @@ class MenuOption extends Component {
     }
     return(
       <div className={clss} id={id} onClick={onItemChanged}>
-        <img src={`images/${option.image}`} alt={option.name} height="100" width="100" />
+        <img src={`images/${option.image}`} alt={option.name} height="50" width="50" />
         <p>{ option.name }</p>
       </div>
     );
