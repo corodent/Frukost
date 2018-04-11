@@ -24,10 +24,12 @@ class App extends Component {
   }
 
   componentDidMount() {
+    /*
     const script = document.createElement("script");
     script.src = "https://apis.google.com/js/api.js";
     script.onload = handleClientLoad;
     document.body.appendChild(script);
+    */
   }
 
   onUpdateCurrentBubble(bubble) {
@@ -40,7 +42,7 @@ class App extends Component {
     this.setState({ currentRoom: room });
   }
 
-  onItemChanged(item, option, event) {
+  onItemChanged(item, option) {
     this.setState( (prevState) => {
       let { order, currentRoom, currentBubble } = prevState;
       const roomName = bubbles[currentBubble].rooms[currentRoom];
@@ -87,6 +89,7 @@ class App extends Component {
           currentOrder={order[roomName]}
           onItemChanged={this.onItemChanged}
         />
+        <button className="fbutton">Skicka Beställning</button>
       </div>
     );
   }
