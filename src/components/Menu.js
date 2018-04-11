@@ -19,8 +19,8 @@ class MenuOption extends Component {
 }
 
 class MenuItem extends Component {
-  onItemChanged( item, option, event ) {
-    this.props.onItemChanged( item, option, event );
+  onItemChanged( item, option ) {
+    this.props.onItemChanged( item, option );
   }
 
   render() {
@@ -42,11 +42,24 @@ class MenuItem extends Component {
       })()
     );
     const enabled = (typeof orderOptions!=='undefined') && orderOptions[item.name]==true;
-
+    let clss = 'menu-main-option';
+    if( enabled ) {
+      clss += ' enabled';
+    }
     return(
       <div className="menu-item">
         {
-          item.hidden || <MenuOption option={item} onItemChanged={this.onItemChanged.bind(this,item,item)} enabled={enabled} />
+       item.hidden || <MenuOption
+                        option={item}
+                        enabled={enabled}
+                        onItemChanged={this.onItemChanged.bind(this,item,item)}
+                      />
+/*
+                <div className={clss} onClick={this.onItemChanged.bind(this,item,item)} option={item}>
+                  <img src={`images/${item.image}`} alt={item.name} height="100" width="100" />
+                  <p>{ item.name }</p>
+                </div>
+*/
         }
         { options }
       </div>
