@@ -1,9 +1,7 @@
-- make the options horizontal layout and half height
-- add the order button
 - When order is complete on a room, make the tab a light shade of bubble color
 - Add the rensa button
-- Klar: Add the dot indicator in the tab for the "ready field"
 - Add the Kommentar field
+- Klar: Add the dot indicator in the tab for the "ready field"
 
 x - update the pictures for the new ones the girls did
 x - hook up to Google Sheets
@@ -13,3 +11,5 @@ x - Add Saft
 x - Put Juice, Näringsdryck and Saft in a row, but can select all 3
 x - Add Frame that changes color, nuke checks
 x  - store state in the app object for all the menu items and options
+x - make the options horizontal layout and half height
+x - add the order button

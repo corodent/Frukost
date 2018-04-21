@@ -19,10 +19,12 @@ const bubbles = [
 const mackaOptions = [{
   name: "Hård Bröd",
   image: "hardbread.jpg",
+  group: true,
 },
 {
   name: "Mjuk Bröd",
   image: "softbread.jpg",
+  group: true,
 },
 {
   name: "Ost",
@@ -41,26 +43,32 @@ const yogiOptions = [
   {
     name: "Lingonsylt",
     image: "lingonjam.jpg",
+    group: true,
   },
   {
     name: "Äppelmos",
     image: "appelmos.jpg",
+    group: true,
   },
   {
     name: "Jordgubbsylt",
     image: "strawberryjam.jpg",
+    group: true,
   },
   {
     name: "Socker",
     image: "socker.jpg",
+    group: true,
   },
   {
     name: "Flingor",
     image: "flingor.jpg",
+    group: true,
   },
   {
     name: "Müesli",
     image: "musli.jpg",
+    group: true,
   },
 ];
 
@@ -68,18 +76,22 @@ const grotOptions = [
   {
     name: "Lingonsylt",
     image: "lingonjam.jpg",
+    group: true,
   },
   {
     name: "Äppelmos",
     image: "appelmos.jpg",
+    group: true,
   },
   {
     name: "Jordgubbsylt",
     image: "strawberryjam.jpg",
+    group: true,
   },
   {
     name: "Socker",
     image: "socker.jpg",
+    group: true,
   }
 ];
 
@@ -87,18 +99,21 @@ const coffeeOptions = [
   {
     name: "Socker",
     image: "socker.jpg",
+    group: true,
   },
   {
     name: "Honung",
     image: "honey.jpg",
-  },
-  {
-    name: "Mjölk",
-    image: "milk.jpg",
+    group: true,
   },
   {
     name: "Sukketter",
     image: "suketter.jpg",
+    group: true,
+  },
+  {
+    name: "Mjölk",
+    image: "milk.jpg",
   },
 ];
 
@@ -153,10 +168,12 @@ const menuItems = [
       {
         name: "Kaviar",
         image: "kaviar.jpg",
+        group: true,
       },
       {
         name: "Salt",
         image: "salt.jpg",
+        group: true,
       }
     ],
   },

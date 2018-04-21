@@ -1,4 +1,6 @@
-import { bubbles } from './Model';
+import { bubbles, menuItems } from './Model';
+import { Order } from './Order';
+
 // Client ID and API key from the Developer Console
 var CLIENT_ID = '542434086778-e1uvvh9rdq8c21si7p2d81tech4pahei.apps.googleusercontent.com';
 var API_KEY = 'AIzaSyApd6eBtkhR5O3dlFj_5El6VmySAIic9e0';
@@ -19,23 +21,35 @@ const BLUE_SHEET_ID  = 289210114;
 const RED_SHEET_ID   = 717808041;
 */
 
-const itemRowMap = {
-  'Macka 1': 2,
-  'Macka 2': 7,
-  'Fil': 12,
-  'Yogurt': 14,
-  'Gröt': 16,
-  'Flingor': 18,
-  'Müesli': 19,
-  'Ägg': 20,
-  'Juice': 22,
-  'Näringsdryck': 23,
-  'Kaffe': 24,
-  'Te': 27,
-};
-
-const TRUE_VALUE = '✔';
-const FALSE_VALUE = '✖';
+const spreadSheetRows = [
+  'Macka 1',
+  'Bröd',
+  'Ost',
+  'Skinka',
+  'Grönt',
+  'Macka 2',
+  'Bröd',
+  'Ost',
+  'Skinka',
+  'Grönt',
+  'Fil',
+  '',
+  'Yoghurt',
+  '',
+  'Gröt',
+  '',
+  'Ägg',
+  '',
+  'Juice',
+  'Näringsdryck',
+  'Saft',
+  'Kaffe',
+  'söt',
+  'mjölk',
+  'Te',
+  'söt',
+  'mjölk'
+];
 
 /**
  *  On load, called to load the auth2 library and API client library.
@@ -96,29 +110,69 @@ function updateCell( sheet, cell, value ) {
   });
 }
 
-function updateValue( bubble, room, item, option, enabled ) {
-  const sheet = bubbles[bubble].name;
-  const column = String.fromCharCode( "B".charCodeAt(0) + room );
-  var row = itemRowMap[item.name];
-  console.log( `update ${sheet} ${column} ${row}`);
+function updateRange( sheet, startCell, endCell, values ) {
+  const range = `${sheet}!${startCell}:${endCell}`;
+  const params = {
+    spreadsheetId: SPREADSHEET_ID,
+    range: range,
+    valueInputOption: "USER_ENTERED",
+  };
+  const valueRangeBody = {
+    range: range,
+    majorDimension: "ROWS",
+    values: values,
+  };
+  window.gapi.client.sheets.spreadsheets.values.update(params, valueRangeBody)
+  .then(function(response) {
+    console.log(response);
+  }, function(response) {
+    console.log('Error: ' + response.result.error.message);
+  });
+}
 
-  // item == option - use the item row -> checkbox or x
-  if( item===option ) {
-      const cell = column + row;
-      updateCell( sheet, cell, enabled ? TRUE_VALUE : FALSE_VALUE );
-  } else {
-    console.log( 'Not something I know how to deal with');
-  }
+function placeOrder( bubble, room, order ) {
+  let row = [];
+  order = order || {};
 
-  // Mackas - item row + 1 + option index -> checkbox or x
-  // Fil, Yogurt - item row + 1 -> set to option name
-  // Ägg -
-  // Kaffe, Te - option == milk - item row + 2 -> checkbox or x
-  //           - option != milk - item row + 2 -> set to option name
+  menuItems.forEach( item => {
+    if( item.name!=='Dryck' ) {
+      const cellData = order.get( room, item.name, item.name ) ? item.name : null;
+      row.push( [cellData] );
+    }
 
+    const groupOpts = item.options.filter( elem => elem.group );
+    const checkOpts = item.options.filter( elem => !elem.group );
+
+    if( groupOpts.length>0 ) {
+      const opt = groupOpts.reduce( ( prevVal, elem ) => {
+        if( prevVal==null && order.get( room, item.name, elem.name ) ) {
+          prevVal = elem.name;
+        }
+        return prevVal;
+      }, null );
+      row.push( [opt] );
+    }
+
+    checkOpts.forEach( option => {
+      let cellData = null;
+      if( order.get( room, item.name, item.name ) ) {
+        const value = order.get( room, item.name, option.name );
+        cellData = value ? option.name : null;
+      }
+      row.push( [cellData] );
+    });
+  });
+
+  const bubbleNumber = bubbles.findIndex( e => e.name==bubble );
+  const roomNumber = bubbles[bubbleNumber].rooms.indexOf(room);
+  const column = String.fromCharCode( "B".charCodeAt(0) + roomNumber );
+  const startRow = 2;
+  const startCell = `${column}${startRow}`;
+  const endCell = `${column}${row.length+startRow-1}`;
+  updateRange( bubble, startCell, endCell, row )
 }
 
 export {
   handleClientLoad,
-  updateValue
+  placeOrder
 }

@@ -3,12 +3,13 @@ import './App.css';
 import BubbleHeader from './components/BubbleHeader';
 import {
   handleClientLoad,
-  updateValue
+  placeOrder
 } from './model/Spreadsheet';
 import {
   bubbles
 } from './model/Model'
 import Menu from './components/Menu';
+import { Order } from './model/Order';
 
 class App extends Component {
   constructor(props) {
@@ -16,20 +17,19 @@ class App extends Component {
     this.state = {
       currentBubble: 0,
       currentRoom: 0,
-      order: {}
+      order: new Order()
     };
     this.onUpdateCurrentBubble = this.onUpdateCurrentBubble.bind(this);
     this.onUpdateCurrentRoom = this.onUpdateCurrentRoom.bind(this);
     this.onItemChanged = this.onItemChanged.bind(this);
+    this.onOrder = this.onOrder.bind(this);
   }
 
   componentDidMount() {
-    /*
     const script = document.createElement("script");
     script.src = "https://apis.google.com/js/api.js";
     script.onload = handleClientLoad;
     document.body.appendChild(script);
-    */
   }
 
   onUpdateCurrentBubble(bubble) {
@@ -46,30 +46,27 @@ class App extends Component {
     this.setState( (prevState) => {
       let { order, currentRoom, currentBubble } = prevState;
       const roomName = bubbles[currentBubble].rooms[currentRoom];
+      const checked = order.get( roomName, item.name, option.name );
+      console.log( `onItemChanged: ${checked}`);
+      order.set( roomName, item.name, option.name, !checked );
 
-      if( typeof order[roomName]==='undefined' ) {
-        order[roomName]={};
+      // add logic to set / unset the hidden menu items here.
+      // nuke this if we manage to show these hidden items again
+      if( item.hidden ) {
+        const anyOptionSet = item.options.reduce( ( prevVal, elem ) => {
+            return prevVal || order.get( roomName, item.name, option.name );
+        }, false );
+        order.set( roomName, item.name, item.name, anyOptionSet );
       }
-      if ( typeof order[roomName][item.name]==='undefined' ) {
-        order[roomName][item.name] = {};
-      }
-      let checked = order[roomName][item.name][option.name];
-      if( typeof checked==='undefined' ) {
-        checked = false;
-      }
-      order[roomName][item.name][option.name]=!checked;
       return { order: order };
     });
+  }
 
-    /*
-    updateValue(
-      this.state.currentBubble,
-      this.state.currentRoom,
-      item,
-      option,
-      event.target.checked
-    );
-    */
+  onOrder() {
+    const { currentBubble, currentRoom, order } = this.state;
+    const bubble = bubbles[currentBubble].name;
+    const room = bubbles[currentBubble].rooms[currentRoom];
+    placeOrder( bubble, room, order );
   }
 
   render() {
@@ -89,7 +86,7 @@ class App extends Component {
           currentOrder={order[roomName]}
           onItemChanged={this.onItemChanged}
         />
-        <button className="fbutton">Skicka Beställning</button>
+        <button className="fbutton" onClick={this.onOrder}>Skicka Beställning</button>
       </div>
     );
   }
