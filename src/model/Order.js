@@ -10,6 +10,15 @@ export function Order() {
     return this[room] && this[room][item] && this[room][item][option] || false;
   };
 
+  this.setOrdered = function ( room, ordered ) {
+    this[room] = this[room] || {};
+    this[room].ordered = ordered;
+  }
+
+  this.getOrdered = function ( room ) {
+    return this[room] && this[room].ordered || false;
+  }
+
   this.toString = function () {
     return JSON.stringify( this );
   };

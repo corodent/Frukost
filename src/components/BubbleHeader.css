@@ -46,3 +46,15 @@
   color: black;
   background-color: white;
 }
+
+.green-order {
+  background-color: lightgreen;
+}
+
+.red-order {
+  background-color: pink;
+}
+
+.blue-order {
+  background-color: lightblue;
+}

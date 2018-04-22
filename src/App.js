@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import BubbleHeader from './components/BubbleHeader';
+import OrderButton from './components/OrderButton';
 import {
   handleClientLoad,
   placeOrder
@@ -47,7 +48,6 @@ class App extends Component {
       let { order, currentRoom, currentBubble } = prevState;
       const roomName = bubbles[currentBubble].rooms[currentRoom];
       const checked = order.get( roomName, item.name, option.name );
-      console.log( `onItemChanged: ${checked}`);
       order.set( roomName, item.name, option.name, !checked );
 
       // add logic to set / unset the hidden menu items here.
@@ -66,7 +66,18 @@ class App extends Component {
     const { currentBubble, currentRoom, order } = this.state;
     const bubble = bubbles[currentBubble].name;
     const room = bubbles[currentBubble].rooms[currentRoom];
-    placeOrder( bubble, room, order );
+    placeOrder( bubble, room, order )
+    .then( (response) => {
+      console.log(response);
+      this.setState( prevState => {
+        let { order, currentRoom, currentBubble } = prevState;
+        const roomName = bubbles[currentBubble].rooms[currentRoom];
+        order.setOrdered( roomName, true );
+        return { order: order };
+      })
+    }, (response) => {
+      console.log('Error: ' + response.result.error.message);
+    });
   }
 
   render() {
@@ -78,6 +89,7 @@ class App extends Component {
         <BubbleHeader
           currentBubble={currentBubble}
           currentRoom={currentRoom}
+          order={order}
           onUpdateBubble={this.onUpdateCurrentBubble}
           onUpdateRoom={this.onUpdateCurrentRoom}
         />
@@ -86,7 +98,10 @@ class App extends Component {
           currentOrder={order[roomName]}
           onItemChanged={this.onItemChanged}
         />
-        <button className="fbutton" onClick={this.onOrder}>Skicka Beställning</button>
+        <OrderButton
+          room={roomName}
+          order={order}
+          onClick={this.onOrder}/>
       </div>
     );
   }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './BubbleHeader.css';
 import { bubbles } from '../model/Model';
+import { Order } from '../model/Order';
 
 export default class BubbleHeader extends Component {
   constructor(props) {
@@ -19,12 +20,15 @@ export default class BubbleHeader extends Component {
   }
 
   render() {
-    const { currentBubble, currentRoom } = this.props;
+    const { currentBubble, currentRoom, order } = this.props;
 
     const listItems = bubbles[currentBubble].rooms.map( ( bbl => {
       var i = 0;
       return (bbl) => {
         var className = i==currentRoom ? "active" : "";
+        if( order.getOrdered( bbl ) ) {
+          className += ` ${bubbles[currentBubble].orderColor}`;
+        }
         var revVal = <li
           className={className}
           key={i}

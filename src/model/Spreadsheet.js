@@ -122,12 +122,7 @@ function updateRange( sheet, startCell, endCell, values ) {
     majorDimension: "ROWS",
     values: values,
   };
-  window.gapi.client.sheets.spreadsheets.values.update(params, valueRangeBody)
-  .then(function(response) {
-    console.log(response);
-  }, function(response) {
-    console.log('Error: ' + response.result.error.message);
-  });
+  return window.gapi.client.sheets.spreadsheets.values.update(params, valueRangeBody);
 }
 
 function placeOrder( bubble, room, order ) {
@@ -169,7 +164,7 @@ function placeOrder( bubble, room, order ) {
   const startRow = 2;
   const startCell = `${column}${startRow}`;
   const endCell = `${column}${row.length+startRow-1}`;
-  updateRange( bubble, startCell, endCell, row )
+  return updateRange( bubble, startCell, endCell, row );
 }
 
 export {

@@ -1,7 +1,8 @@
-- When order is complete on a room, make the tab a light shade of bubble color
-- Add the rensa button
+- Add the rensa button for the bubble
 - Add the Kommentar field
 - Klar: Add the dot indicator in the tab for the "ready field"
+- Update the app icon and title
+- Error UI in the order
 
 x - update the pictures for the new ones the girls did
 x - hook up to Google Sheets
@@ -13,3 +14,4 @@ x - Add Frame that changes color, nuke checks
 x  - store state in the app object for all the menu items and options
 x - make the options horizontal layout and half height
 x - add the order button
+x - When order is complete on a room, make the tab a light shade of bubble color
