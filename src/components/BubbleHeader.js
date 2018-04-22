@@ -20,7 +20,7 @@ export default class BubbleHeader extends Component {
   }
 
   render() {
-    const { currentBubble, currentRoom, order } = this.props;
+    const { currentBubble, currentRoom, order, onCleanBubble } = this.props;
 
     const listItems = bubbles[currentBubble].rooms.map( ( bbl => {
       var i = 0;
@@ -43,6 +43,9 @@ export default class BubbleHeader extends Component {
       <header className="bubble-header">
         <ul className={bubbles[currentBubble].color}>
           {listItems}
+          <li id="bubble-cleaner">
+            <button name="Rensa" onClick={onCleanBubble}>Rensa Bubla</button>
+          </li>
           <li id="bubble-selector">
             <select name="Bubla" onChange={this.onUpdateBubble}>
               <option value="0">Grön</option>

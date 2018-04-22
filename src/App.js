@@ -4,7 +4,8 @@ import BubbleHeader from './components/BubbleHeader';
 import OrderButton from './components/OrderButton';
 import {
   handleClientLoad,
-  placeOrder
+  placeOrder,
+  resetBubble
 } from './model/Spreadsheet';
 import {
   bubbles
@@ -24,6 +25,7 @@ class App extends Component {
     this.onUpdateCurrentRoom = this.onUpdateCurrentRoom.bind(this);
     this.onItemChanged = this.onItemChanged.bind(this);
     this.onOrder = this.onOrder.bind(this);
+    this.onCleanBubble = this.onCleanBubble.bind(this);
   }
 
   componentDidMount() {
@@ -80,6 +82,25 @@ class App extends Component {
     });
   }
 
+  onCleanBubble() {
+    const { currentBubble } = this.state;
+    console.log( `onCleanBubble(${currentBubble})`);
+    resetBubble( currentBubble )
+    .then( response => {
+      console.log(response);
+      this.setState( prevState => {
+        let { currentBubble, order } = prevState;
+        bubbles[currentBubble].rooms.forEach( elem => {
+          order.cleanOrder(elem);
+        });
+        return { order: order };
+      });
+    }, response => {
+      console.log( `Error: ${response.result.error.message}`);
+    }
+    );
+  }
+
   render() {
     const { currentBubble, currentRoom, order } = this.state;
     const roomName = bubbles[currentBubble].rooms[currentRoom];
@@ -92,6 +113,7 @@ class App extends Component {
           order={order}
           onUpdateBubble={this.onUpdateCurrentBubble}
           onUpdateRoom={this.onUpdateCurrentRoom}
+          onCleanBubble={this.onCleanBubble}
         />
         <Menu
           currentBubble={currentBubble}

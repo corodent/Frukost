@@ -21,6 +21,9 @@ const BLUE_SHEET_ID  = 289210114;
 const RED_SHEET_ID   = 717808041;
 */
 
+const START_ROW = 2;
+const START_COLUMN = "B";
+
 const spreadSheetRows = [
   'Macka 1',
   'Bröd',
@@ -112,6 +115,7 @@ function updateCell( sheet, cell, value ) {
 
 function updateRange( sheet, startCell, endCell, values ) {
   const range = `${sheet}!${startCell}:${endCell}`;
+  console.log( `updateRange ${range}` );
   const params = {
     spreadsheetId: SPREADSHEET_ID,
     range: range,
@@ -160,14 +164,27 @@ function placeOrder( bubble, room, order ) {
 
   const bubbleNumber = bubbles.findIndex( e => e.name==bubble );
   const roomNumber = bubbles[bubbleNumber].rooms.indexOf(room);
-  const column = String.fromCharCode( "B".charCodeAt(0) + roomNumber );
-  const startRow = 2;
-  const startCell = `${column}${startRow}`;
-  const endCell = `${column}${row.length+startRow-1}`;
+  const column = String.fromCharCode( START_COLUMN.charCodeAt(0) + roomNumber );
+  const startCell = `${column}${START_ROW}`;
+  const endCell = `${column}${row.length+START_ROW-1}`;
   return updateRange( bubble, startCell, endCell, row );
+}
+
+function resetBubble( bubbleNumber ) {
+  console.log( `resetBubble ${bubbleNumber}`);
+  const width = bubbles[bubbleNumber].rooms.length
+  const row = Array( width  ).fill('');
+  const values = Array( spreadSheetRows.length ).fill(row);
+  console.log( values );
+
+  const endColumn = String.fromCharCode( START_COLUMN.charCodeAt(0) + width - 1 );
+  const startCell = `${START_COLUMN}${START_ROW}`;
+  const endCell = `${endColumn}${values.length+START_ROW-1}`;
+  return updateRange( bubbles[bubbleNumber].name, startCell, endCell, values );
 }
 
 export {
   handleClientLoad,
-  placeOrder
+  placeOrder,
+  resetBubble
 }

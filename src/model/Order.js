@@ -19,6 +19,10 @@ export function Order() {
     return this[room] && this[room].ordered || false;
   }
 
+  this.cleanOrder = function ( room ) {
+    this[room] = {};
+  }
+
   this.toString = function () {
     return JSON.stringify( this );
   };
