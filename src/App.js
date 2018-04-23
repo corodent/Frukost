@@ -8,7 +8,8 @@ import {
   resetBubble
 } from './model/Spreadsheet';
 import {
-  bubbles
+  bubbles,
+  COMMENTS_PROP,
 } from './model/Model'
 import Menu from './components/Menu';
 import { Order } from './model/Order';
@@ -26,6 +27,7 @@ class App extends Component {
     this.onItemChanged = this.onItemChanged.bind(this);
     this.onOrder = this.onOrder.bind(this);
     this.onCleanBubble = this.onCleanBubble.bind(this);
+    this.onCommentsChange = this.onCommentsChange.bind(this);
   }
 
   componentDidMount() {
@@ -101,6 +103,16 @@ class App extends Component {
     );
   }
 
+  onCommentsChange( event ) {
+    const value = event.target.value;
+    this.setState( prevState => {
+      const { currentBubble, currentRoom, order } = prevState;
+      const roomName = bubbles[currentBubble].rooms[currentRoom];
+      order.set( roomName, COMMENTS_PROP, COMMENTS_PROP, value );
+      return { order: order };
+    });
+  }
+
   render() {
     const { currentBubble, currentRoom, order } = this.state;
     const roomName = bubbles[currentBubble].rooms[currentRoom];
@@ -119,6 +131,7 @@ class App extends Component {
           currentBubble={currentBubble}
           currentOrder={order[roomName]}
           onItemChanged={this.onItemChanged}
+          onCommentsChange={this.onCommentsChange}
         />
         <OrderButton
           room={roomName}

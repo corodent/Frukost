@@ -1,4 +1,4 @@
-import { bubbles, menuItems } from './Model';
+import { bubbles, menuItems, COMMENTS_PROP } from './Model';
 import { Order } from './Order';
 
 // Client ID and API key from the Developer Console
@@ -51,7 +51,8 @@ const spreadSheetRows = [
   'mjölk',
   'Te',
   'söt',
-  'mjölk'
+  'mjölk',
+  'Kommentar'
 ];
 
 /**
@@ -161,6 +162,9 @@ function placeOrder( bubble, room, order ) {
       row.push( [cellData] );
     });
   });
+
+  let cellData = order.get( room, COMMENTS_PROP, COMMENTS_PROP ) || null;
+  row.push( [cellData] );
 
   const bubbleNumber = bubbles.findIndex( e => e.name==bubble );
   const roomNumber = bubbles[bubbleNumber].rooms.indexOf(room);

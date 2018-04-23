@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Menu.css';
-import { menuItems } from '../model/Model';
+import { menuItems, COMMENTS_PROP } from '../model/Model';
 
 class MenuOption extends Component {
   render() {
@@ -68,8 +68,27 @@ class MenuItem extends Component {
 }
 
 export default class Menu extends Component {
+  constructor(props) {
+    super(props);
+    this.onKak = this.onKak.bind(this);
+  }
+
+  onKak(event) {
+    console.log(`onKak(${event.target.value})`);
+  }
+
   render() {
-    const { currentBubble, onItemChanged, currentOrder } = this.props;
+    const {
+      currentBubble,
+      onItemChanged,
+      currentOrder,
+      onCommentsChange } = this.props;
+
+    let comments = "";
+    if( currentOrder && currentOrder[COMMENTS_PROP] && currentOrder[COMMENTS_PROP][COMMENTS_PROP] ) {
+      comments = currentOrder[COMMENTS_PROP][COMMENTS_PROP];
+    }
+
     return (
       <div className="menu-container">
       {
@@ -80,6 +99,15 @@ export default class Menu extends Component {
           );
         })
       }
+        <div id="comments-container">
+          <div id="comments-label">Kommentar</div>
+          <input
+            type="text"
+            name="comments"
+            onChange={onCommentsChange}
+            value={comments}
+          />
+        </div>
       </div>
     );
   }

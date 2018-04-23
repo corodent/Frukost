@@ -198,7 +198,10 @@ const menuItems = [
   },
 ];
 
+const COMMENTS_PROP = 'Kommentar';
+
 export {
   bubbles,
-  menuItems
+  menuItems,
+  COMMENTS_PROP,
 }

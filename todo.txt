@@ -1,8 +1,17 @@
-- Add the Kommentar field
 - Klar: Add the dot indicator in the tab for the "ready field"
 - Update the app icon and title
+- styling for Rensa
+- styling for Kommentar
+- semra styling
 - Error UI in the order
 - make the order button match the color of the bubble
+- Error UI on the rensa
+
+For the girls:
+- How should the ordered/ready to deliver states work?
+- good with just bubble clean?
+- Order
+- Comments look like crap in the spreadSheet
 
 x - update the pictures for the new ones the girls did
 x - hook up to Google Sheets
@@ -16,3 +25,4 @@ x - make the options horizontal layout and half height
 x - add the order button
 x - When order is complete on a room, make the tab a light shade of bubble color
 x - Add the rensa button for the bubble
+x - Add the Kommentar field
