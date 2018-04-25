@@ -59,7 +59,8 @@ class App extends Component {
 
   onUpdateCurrentBubble(bubble) {
     this.setState({
-      currentBubble: bubble
+      currentBubble: bubble,
+      currentRoom: 0
     });
   }
 

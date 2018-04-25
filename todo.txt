@@ -1,9 +1,7 @@
-- Sign in
 - clear the web page from the excel
   - Read klar rows
   - Klar: Add the dot indicator in the tab for the "ready field"
   - Clear order
-- reset current room when you change bubbles
 - Update the app icon and title
 - styling for Kommentar
 - put the text in an i bubble
@@ -50,3 +48,5 @@ x - add the title
 x - Go with just öb for now, without the number but will ask hospital
 x - semra styling
 x - make the order button match the color of the bubble
+x - Sign in
+x - reset current room when you change bubbles
