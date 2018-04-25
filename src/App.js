@@ -5,7 +5,8 @@ import OrderButton from './components/OrderButton';
 import {
   handleClientLoad,
   placeOrder,
-  resetBubble
+  resetBubble,
+  signIn,
 } from './model/Spreadsheet';
 import {
   bubbles,
@@ -13,6 +14,7 @@ import {
 } from './model/Model'
 import Menu from './components/Menu';
 import { Order } from './model/Order';
+import Signin from './components/Signin';
 
 class App extends Component {
   constructor(props) {
@@ -20,7 +22,8 @@ class App extends Component {
     this.state = {
       currentBubble: 0,
       currentRoom: 0,
-      order: new Order()
+      order: new Order(),
+      isSignedIn: false,
     };
     this.onUpdateCurrentBubble = this.onUpdateCurrentBubble.bind(this);
     this.onUpdateCurrentRoom = this.onUpdateCurrentRoom.bind(this);
@@ -28,13 +31,30 @@ class App extends Component {
     this.onOrder = this.onOrder.bind(this);
     this.onCleanBubble = this.onCleanBubble.bind(this);
     this.onCommentsChange = this.onCommentsChange.bind(this);
+    this.onClientLoad = this.onClientLoad.bind(this);
+    this.onSigninChanged = this.onSigninChanged.bind(this);
+    this.onSignin = this.onSignin.bind(this);
   }
 
   componentDidMount() {
     const script = document.createElement("script");
     script.src = "https://apis.google.com/js/api.js";
-    script.onload = handleClientLoad;
+    script.onload = this.onClientLoad;
     document.body.appendChild(script);
+  }
+
+  onClientLoad() {
+    handleClientLoad(this.onSigninChanged);
+  }
+
+  onSigninChanged( isSignedIn ) {
+    console.log( `onSigninChanged(${isSignedIn})`);
+    this.setState({ isSignedIn: isSignedIn });
+  }
+
+  onSignin() {
+    console.log( `onSignin` );
+    signIn();
   }
 
   onUpdateCurrentBubble(bubble) {
@@ -114,31 +134,35 @@ class App extends Component {
   }
 
   render() {
-    const { currentBubble, currentRoom, order } = this.state;
+    const { currentBubble, currentRoom, order, isSignedIn } = this.state;
     const roomName = bubbles[currentBubble].rooms[currentRoom];
 
-    return (
-      <div className="App">
-        <BubbleHeader
-          currentBubble={currentBubble}
-          currentRoom={currentRoom}
-          order={order}
-          onUpdateBubble={this.onUpdateCurrentBubble}
-          onUpdateRoom={this.onUpdateCurrentRoom}
-          onCleanBubble={this.onCleanBubble}
-        />
-        <Menu
-          currentBubble={currentBubble}
-          currentOrder={order[roomName]}
-          onItemChanged={this.onItemChanged}
-          onCommentsChange={this.onCommentsChange}
-        />
-        <OrderButton
-          room={roomName}
-          order={order}
-          onClick={this.onOrder}/>
-      </div>
-    );
+    if( !isSignedIn ) {
+      return <Signin onClick={this.onSignin}/>;
+    } else {
+      return (
+        <div className="App">
+          <BubbleHeader
+            currentBubble={currentBubble}
+            currentRoom={currentRoom}
+            order={order}
+            onUpdateBubble={this.onUpdateCurrentBubble}
+            onUpdateRoom={this.onUpdateCurrentRoom}
+            onCleanBubble={this.onCleanBubble}
+          />
+          <Menu
+            currentBubble={currentBubble}
+            currentOrder={order[roomName]}
+            onItemChanged={this.onItemChanged}
+            onCommentsChange={this.onCommentsChange}
+          />
+          <OrderButton
+            room={roomName}
+            order={order}
+            onClick={this.onOrder}/>
+        </div>
+      );
+    }
   }
 }
 

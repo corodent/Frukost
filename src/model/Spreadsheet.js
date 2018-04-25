@@ -2,8 +2,8 @@ import { bubbles, menuItems, COMMENTS_PROP } from './Model';
 import { Order } from './Order';
 
 // Client ID and API key from the Developer Console
-var CLIENT_ID = '542434086778-e1uvvh9rdq8c21si7p2d81tech4pahei.apps.googleusercontent.com';
-var API_KEY = 'AIzaSyApd6eBtkhR5O3dlFj_5El6VmySAIic9e0';
+// var CLIENT_ID = '542434086778-e1uvvh9rdq8c21si7p2d81tech4pahei.apps.googleusercontent.com';
+var CLIENT_ID = '1012841776473-2lhkldc78e7q274b4ldjdia58f7t857r.apps.googleusercontent.com';
 
 // Array of API discovery doc URLs for APIs used by the quickstart
 var DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
@@ -58,27 +58,29 @@ const spreadSheetRows = [
 /**
  *  On load, called to load the auth2 library and API client library.
  */
-function handleClientLoad() {
-  window.gapi.load('client:auth2', initClient);
+function handleClientLoad( onSigninChanged ) {
+  window.gapi.load('client:auth2', initClient(onSigninChanged));
 }
 
 /**
  *  Initializes the API client library and sets up sign-in state
  *  listeners.
  */
-function initClient() {
-  window.gapi.client.init({
-    apiKey: API_KEY,
-    clientId: CLIENT_ID,
-    discoveryDocs: DISCOVERY_DOCS,
-    scope: SCOPES
-  }).then(function () {
-    // Listen for sign-in state changes.
-    window.gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+function initClient( onSigninChanged ) {
+  const cb = onSigninChanged;
+  return function () {
+    window.gapi.client.init({
+      clientId: CLIENT_ID,
+      discoveryDocs: DISCOVERY_DOCS,
+      scope: SCOPES
+    }).then(function () {
+      // Listen for sign-in state changes.
+      window.gapi.auth2.getAuthInstance().isSignedIn.listen(cb);
 
-    // Handle the initial sign-in state.
-    updateSigninStatus(window.gapi.auth2.getAuthInstance().isSignedIn.get());
-  });
+      // Handle the initial sign-in state.
+      cb(window.gapi.auth2.getAuthInstance().isSignedIn.get());
+    });
+  }
 }
 
 /**
@@ -90,8 +92,12 @@ function updateSigninStatus(isSignedIn) {
     console.log("signed in");
   } else {
     console.log("not signed in");
-    window.gapi.auth2.getAuthInstance().signIn();
+//    window.gapi.auth2.getAuthInstance().signIn();
   }
+}
+
+function isSignedIn() {
+  return window.gapi.auth2.getAuthInstance().isSignedIn.get();
 }
 
 function updateCell( sheet, cell, value ) {
@@ -187,8 +193,22 @@ function resetBubble( bubbleNumber ) {
   return updateRange( bubbles[bubbleNumber].name, startCell, endCell, values );
 }
 
+function signIn() {
+  console.log( 'signIn');
+  window.gapi.auth2.getAuthInstance().signIn({
+    ux_mode: 'redirect'
+  })
+  .then( () => {
+    console.log( 'signIn worked ... oh yeah!!!' );
+  })
+  .catch( error => {
+    console.log(`Error signing in: ${error}`);
+  });
+}
+
 export {
   handleClientLoad,
   placeOrder,
-  resetBubble
+  resetBubble,
+  signIn,
 }

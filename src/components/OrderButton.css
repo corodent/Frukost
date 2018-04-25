@@ -1,0 +1,14 @@
+.fbutton {
+  background-color: #CECECE;
+  color: #242424;
+  font-size: 20px;
+  padding: 10px 20px;
+  border-radius: 2px;
+  margin: 10px;
+  box-shadow: 0px 8px 8px ;
+}
+
+.ordered {
+  background-color: #EBEBEB;
+  box-shadow: none;
+}

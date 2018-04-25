@@ -1,17 +1,35 @@
-- Klar: Add the dot indicator in the tab for the "ready field"
+- Sign in
+- clear the web page from the excel
+  - Read klar rows
+  - Klar: Add the dot indicator in the tab for the "ready field"
+  - Clear order
+- reset current room when you change bubbles
 - Update the app icon and title
-- styling for Rensa
 - styling for Kommentar
-- semra styling
+- put the text in an i bubble
+- for Fil and Yogurt, make 2 single selects: sweetner and topping. Also put the toppings first
+- be sure to make the radio buttons work (clear other options)
 - Error UI in the order
-- make the order button match the color of the bubble
+- Move milk first beside tea and coffee
+- button states of sent and disabled
 - Error UI on the rensa
+- Add rensa room to the room
+- get rid of Popup and make login full screen
+- Kommentar
+- Better drop down
 
-For the girls:
-- How should the ordered/ready to deliver states work?
-- good with just bubble clean?
-- Order
-- Comments look like crap in the spreadSheet
+later:
+- https for the amazon hosting
+- Tests
+
+Spreadsheet:
+- button to clear bubbles
+- Lock the areas of the spreadsheet that shouldn't be changed
+
+New decisions:
+- Make the bubble rensa on the spreadsheet - be sure to clear the webui
+- Add rensa room to the room
+- No specific order
 
 x - update the pictures for the new ones the girls did
 x - hook up to Google Sheets
@@ -26,3 +44,9 @@ x - add the order button
 x - When order is complete on a room, make the tab a light shade of bubble color
 x - Add the rensa button for the bubble
 x - Add the Kommentar field
+x - Helvetica Neue
+x - room tabs
+x - add the title
+x - Go with just öb for now, without the number but will ask hospital
+x - semra styling
+x - make the order button match the color of the bubble

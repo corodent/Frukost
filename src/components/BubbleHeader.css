@@ -1,6 +1,5 @@
 .bubble-header {
   border: 1px solid #ccc;
-  background-color: red;
 }
 
 .bubble-header ul {
@@ -8,53 +7,78 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
-  color: white;
 }
 
 .bubble-header li {
-  float: left;
-  display: block;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-.bubble-header #bubble-selector {
-  float: right;
-  display: block;
 }
 
 .bubble-header select {
   border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  height: 29px;
+  margin: 10px;
+}
+
+.room {
+  float: left;
+  display: block;
+  text-align: center;
   font-size: 16px;
-  font-family: sans-serif;
+  padding-top: 8px;
+  text-decoration: none;
+  color: #707070;
+  border: 1px solid #707070;
+  border-radius: 8px;
+  width: 45px;
+  height: 28px;
+  margin: 10px;
+  box-shadow: 0px 1px 6px;
+}
+
+.room-active {
+  color: #FDFDFD;
+  background-color: #999999;
+  border-color: #707070;
+  box-shadow: 0px 1px 6px;
+}
+
+.room-ordered {
+  background-color: #EBEBEB;
+  color: #707070;
+  border: none;
+  box-shadow: none;
+}
+
+.room-active-ordered {
+  background-color: #EBEBEB;
+  color: #707070;
+  border-color: #707070;
+}
+
+.title-bar {
+  display: flex;
+  flex-direction: row;
+  align-content: stretch;
+  position:relative;
+}
+
+.title {
+  font-size: 20px;
+  color: #707070;
+  flex-grow: 1;
+  padding-left: 200px;
+  padding-top: 14px;
 }
 
 .green-bg {
-  background-color: green;
+  background-color: #4FDB48;
 }
 
 .red-bg {
-  background-color: red;
+  background-color: #FF6758;
 }
 
 .blue-bg {
-  background-color: blue;
-}
-
-.active {
-  color: black;
-  background-color: white;
-}
-
-.green-order {
-  background-color: lightgreen;
-}
-
-.red-order {
-  background-color: pink;
-}
-
-.blue-order {
-  background-color: lightblue;
+  background-color: #6394F3;
 }

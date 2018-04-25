@@ -25,10 +25,19 @@ export default class BubbleHeader extends Component {
     const listItems = bubbles[currentBubble].rooms.map( ( bbl => {
       var i = 0;
       return (bbl) => {
-        var className = i==currentRoom ? "active" : "";
-        if( order.getOrdered( bbl ) ) {
-          className += ` ${bubbles[currentBubble].orderColor}`;
+        var className = 'room';
+
+        if( order.getOrdered( bbl ) && i==currentRoom ) {
+          className += ' room-active-ordered';
+        } else {
+          if( order.getOrdered( bbl ) ) {
+            className += ' room-ordered';
+          }
+          if( i==currentRoom ) {
+            className += ' room-active';
+          }
         }
+        console.log( `BubbleHeader.render: className ${className}`)
         var revVal = <li
           className={className}
           key={i}
@@ -39,20 +48,20 @@ export default class BubbleHeader extends Component {
       }
     })());
 
+    let className
+
     return (
       <header className="bubble-header">
-        <ul className={bubbles[currentBubble].color}>
+        <div className="title-bar">
+          <select name="Bubla" onChange={this.onUpdateBubble} className={bubbles[currentBubble].color}>
+            <option value="0">Grön Bubbla</option>
+            <option value="1">Röd Bubbla</option>
+            <option value="2">Blå Bubbla</option>
+          </select>
+          <div className="title">Frukostbeställning till köksan</div>
+        </div>
+        <ul>
           {listItems}
-          <li id="bubble-cleaner">
-            <button name="Rensa" onClick={onCleanBubble}>Rensa Bubla</button>
-          </li>
-          <li id="bubble-selector">
-            <select name="Bubla" onChange={this.onUpdateBubble}>
-              <option value="0">Grön</option>
-              <option value="1">Röd</option>
-              <option value="2">Blå</option>
-            </select>
-          </li>
         </ul>
       </header>
     );
