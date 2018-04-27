@@ -7,6 +7,7 @@ import {
   placeOrder,
   resetBubble,
   signIn,
+  readSheetState
 } from './model/Spreadsheet';
 import {
   bubbles,
@@ -34,6 +35,14 @@ class App extends Component {
     this.onClientLoad = this.onClientLoad.bind(this);
     this.onSigninChanged = this.onSigninChanged.bind(this);
     this.onSignin = this.onSignin.bind(this);
+    this.testSomething = this.testSomething.bind(this);
+  }
+
+  testSomething() {
+    readSheetState()
+    .then( sheetState => {
+      console.log(sheetState);
+    });
   }
 
   componentDidMount() {
@@ -161,6 +170,7 @@ class App extends Component {
             room={roomName}
             order={order}
             onClick={this.onOrder}/>
+          <button onClick={this.testSomething}>Test</button>
         </div>
       );
     }

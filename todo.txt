@@ -1,10 +1,11 @@
 - clear the web page from the excel
-  - Read klar rows
+x  - Read klar rows
   - Klar: Add the dot indicator in the tab for the "ready field"
   - Clear order
 - Update the app icon and title
+- add loading state before signin
 - styling for Kommentar
-- put the text in an i bubble
+- put the text in an i bubble - 10pt text
 - for Fil and Yogurt, make 2 single selects: sweetner and topping. Also put the toppings first
 - be sure to make the radio buttons work (clear other options)
 - Error UI in the order

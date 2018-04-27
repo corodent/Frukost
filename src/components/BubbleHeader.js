@@ -15,7 +15,6 @@ export default class BubbleHeader extends Component {
   }
 
   onUpdateRoom(room, event) {
-    console.log(`BubbleHeader.onUpdateRoom: ${room}`)
     this.props.onUpdateRoom(room)
   }
 
@@ -37,7 +36,6 @@ export default class BubbleHeader extends Component {
             className += ' room-active';
           }
         }
-        console.log( `BubbleHeader.render: className ${className}`)
         var revVal = <li
           className={className}
           key={i}

@@ -23,6 +23,7 @@ const RED_SHEET_ID   = 717808041;
 
 const START_ROW = 2;
 const START_COLUMN = "B";
+const STATUS_ROW = 30;
 
 const spreadSheetRows = [
   'Macka 1',
@@ -182,7 +183,7 @@ function placeOrder( bubble, room, order ) {
 
 function resetBubble( bubbleNumber ) {
   console.log( `resetBubble ${bubbleNumber}`);
-  const width = bubbles[bubbleNumber].rooms.length
+  const width = bubbles[bubbleNumber].rooms.length;
   const row = Array( width  ).fill('');
   const values = Array( spreadSheetRows.length ).fill(row);
   console.log( values );
@@ -206,9 +207,42 @@ function signIn() {
   });
 }
 
+function readSheetState() {
+  console.log( 'readSheetState' );
+
+  const ranges = bubbles.map( elem => {
+    const width = elem.rooms.length;
+    const endColumn = String.fromCharCode( START_COLUMN.charCodeAt(0) + width - 1 );
+    return `${elem.name}!${START_COLUMN}${STATUS_ROW}:${endColumn}${STATUS_ROW}`;
+  });
+
+  const params = {
+    spreadsheetId: SPREADSHEET_ID,
+    ranges: ranges
+  };
+
+  const re = /\'(.*)\'/;
+
+  return window.gapi.client.sheets.spreadsheets.values.batchGet(params)
+  .then( response => {
+    var result = {};
+    response.result.valueRanges.forEach( elem => {
+      console.log(`elem.range ${elem.range}`);
+      let a = re.exec( elem.range );
+      if( a!=null ) {
+        result[a[1]] = elem.values ? elem.values[0] : [];
+      }
+    });
+    return result;
+  }, response => {
+    console.log( `ERROR readSheetState ${response.result.error.message}`);
+  });
+}
+
 export {
   handleClientLoad,
   placeOrder,
   resetBubble,
   signIn,
+  readSheetState,
 }
