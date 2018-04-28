@@ -33,6 +33,7 @@ class App extends Component {
       currentRoom: 0,
       order: new Order(),
       signInState: SignInState.LOADING,
+      isInfoVisible: false
     };
     this.onUpdateCurrentBubble = this.onUpdateCurrentBubble.bind(this);
     this.onUpdateCurrentRoom = this.onUpdateCurrentRoom.bind(this);
@@ -43,18 +44,12 @@ class App extends Component {
     this.onClientLoad = this.onClientLoad.bind(this);
     this.onSigninChanged = this.onSigninChanged.bind(this);
     this.onSignin = this.onSignin.bind(this);
-//    this.testSomething = this.testSomething.bind(this);
     this.syncServerState = this.syncServerState.bind(this);
     this.componentWillUnmount = this.componentWillUnmount.bind(this);
+    this.toggleInfo = this.toggleInfo.bind(this);
 
     this.timerID = 0;
   }
-
-/*
-  testSomething() {
-    this.syncServerState();
-  }
-*/
 
   componentDidMount() {
     console.log( 'App.componentDidMount')
@@ -190,8 +185,22 @@ class App extends Component {
     });
   }
 
+  toggleInfo() {
+
+//    this.setState( prevState => {isInfoVisible: !prevState.isInfoVisible});
+    this.setState( prevState => {
+      console.log(`toggleInfo ${prevState.isInfoVisible}`);
+      return { isInfoVisible: !prevState.isInfoVisible}
+    });
+  }
+
   render() {
-    const { currentBubble, currentRoom, order, signInState } = this.state;
+    const {
+      currentBubble,
+      currentRoom,
+      order,
+      signInState,
+      isInfoVisible } = this.state;
     const roomName = bubbles[currentBubble].rooms[currentRoom];
 
     console.log( 'App.render' );
@@ -207,9 +216,11 @@ class App extends Component {
             currentBubble={currentBubble}
             currentRoom={currentRoom}
             order={order}
+            isInfoVisible={isInfoVisible}
             onUpdateBubble={this.onUpdateCurrentBubble}
             onUpdateRoom={this.onUpdateCurrentRoom}
             onCleanBubble={this.onCleanBubble}
+            onToggleInfo={this.toggleInfo}
           />
           <Menu
             currentBubble={currentBubble}

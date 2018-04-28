@@ -182,7 +182,7 @@ function mergeState( sheetState, order ) {
           order.setOrderState( bubble.rooms[i], order.OrderState.READY );
         }
         if( ( i<value.length && value[i]==='' ) || i>=value.length ) {
-          if( order.getOrderState(bubble.rooms[i])!=order.OrderState.START ) {
+          if( order.getOrderState(bubble.rooms[i])!==order.OrderState.START ) {
             order.cleanOrder(bubble.rooms[i]);
           }
         }
