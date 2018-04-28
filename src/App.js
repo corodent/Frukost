@@ -7,7 +7,8 @@ import {
   placeOrder,
   resetBubble,
   signIn,
-  readSheetState
+  readSheetState,
+  mergeState,
 } from './model/Spreadsheet';
 import {
   bubbles,
@@ -17,14 +18,21 @@ import Menu from './components/Menu';
 import { Order } from './model/Order';
 import Signin from './components/Signin';
 
+const SignInState = {
+  LOADING: 1,
+  SIGNED_OUT: 2,
+  SIGNED_IN: 3
+}
+
 class App extends Component {
   constructor(props) {
+    console.log( 'App.constructor')
     super(props);
     this.state = {
       currentBubble: 0,
       currentRoom: 0,
       order: new Order(),
-      isSignedIn: false,
+      signInState: SignInState.LOADING,
     };
     this.onUpdateCurrentBubble = this.onUpdateCurrentBubble.bind(this);
     this.onUpdateCurrentRoom = this.onUpdateCurrentRoom.bind(this);
@@ -36,20 +44,50 @@ class App extends Component {
     this.onSigninChanged = this.onSigninChanged.bind(this);
     this.onSignin = this.onSignin.bind(this);
     this.testSomething = this.testSomething.bind(this);
+    this.syncServerState = this.syncServerState.bind(this);
+    this.componentWillUnmount = this.componentWillUnmount.bind(this);
+
+    this.timerID = 0;
   }
 
   testSomething() {
-    readSheetState()
-    .then( sheetState => {
-      console.log(sheetState);
-    });
+    this.syncServerState();
   }
 
   componentDidMount() {
+    console.log( 'App.componentDidMount')
     const script = document.createElement("script");
     script.src = "https://apis.google.com/js/api.js";
     script.onload = this.onClientLoad;
     document.body.appendChild(script);
+  }
+
+  componentWillUnmount() {
+    console.log( 'App.componentWillUnmount' );
+    if( this.timerID!==0 ) {
+      clearTimeout( this.timerID );
+    }
+  }
+
+  syncServerState() {
+    if( this.timerID!==0 ) {
+      clearTimeout( this.timerID );
+    }
+    setTimeout( this.syncServerState, 10000 );
+
+    console.log( 'App.syncServerState');
+
+    readSheetState()
+    .then( sheetState => {
+      this.setState( prevState => {
+        let { order } = prevState;
+        mergeState( sheetState, order );
+        return { order: order };
+      });
+    })
+    .catch( error => {
+      console.log( `syncServerState ERROR ${error}`);
+    });
   }
 
   onClientLoad() {
@@ -58,7 +96,11 @@ class App extends Component {
 
   onSigninChanged( isSignedIn ) {
     console.log( `onSigninChanged(${isSignedIn})`);
-    this.setState({ isSignedIn: isSignedIn });
+    const signInState = isSignedIn ? SignInState.SIGNED_IN : SignInState.SIGNED_IN;
+    this.setState({ signInState: signInState });
+    if( signInState===SignInState.SIGNED_IN ) {
+      this.syncServerState();
+    }
   }
 
   onSignin() {
@@ -71,10 +113,12 @@ class App extends Component {
       currentBubble: bubble,
       currentRoom: 0
     });
+    this.syncServerState();
   }
 
   onUpdateCurrentRoom(room) {
     this.setState({ currentRoom: room });
+    this.syncServerState();
   }
 
   onItemChanged(item, option) {
@@ -92,6 +136,7 @@ class App extends Component {
         }, false );
         order.set( roomName, item.name, item.name, anyOptionSet );
       }
+      console.log( order.toString() );
       return { order: order };
     });
   }
@@ -106,7 +151,7 @@ class App extends Component {
       this.setState( prevState => {
         let { order, currentRoom, currentBubble } = prevState;
         const roomName = bubbles[currentBubble].rooms[currentRoom];
-        order.setOrdered( roomName, true );
+        order.setOrderState( roomName, order.OrderState.ORDERED );
         return { order: order };
       })
     }, (response) => {
@@ -144,10 +189,14 @@ class App extends Component {
   }
 
   render() {
-    const { currentBubble, currentRoom, order, isSignedIn } = this.state;
+    const { currentBubble, currentRoom, order, signInState } = this.state;
     const roomName = bubbles[currentBubble].rooms[currentRoom];
 
-    if( !isSignedIn ) {
+    console.log( 'App.render' );
+
+    if( signInState===SignInState.LOADING ) {
+      return <p>Laddar...</p>
+    } else if( signInState===SignInState.SIGNED_OUT ) {
       return <Signin onClick={this.onSignin}/>;
     } else {
       return (

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Order } from '../model/Order';
 import './OrderButton.css';
 
 export default class OrderButton extends Component {
@@ -8,7 +7,7 @@ export default class OrderButton extends Component {
     var txt1;
     let txt2 = `SÄNG ${room}`;
     let clss = 'fbutton';
-    if( order.getOrdered(room) ) {
+    if( order.getOrderState(room)!==order.OrderState.START ) {
       txt1 = 'BESTÄLLNINGEN SKICKAD';
       clss += ' ordered';
     } else {

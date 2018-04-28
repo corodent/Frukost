@@ -1,31 +1,31 @@
 const bubbles = [
 {
   name: "Grön",
-  rooms: ["13", "14", "15", "16:1", "16:2", "17:1", "17:2", "17:3", "ÖB"],
+  rooms: ["13", "14", "15", "16:1", "16:2", "17:1", "17:2", "17:3", "17 ÖB"],
   color: "green-bg",
   orderColor: "green-order",
 },
 {
   name: "Röd",
-  rooms: ["26", "27", "28", "29:1", "29:2", "30:1", "30:2", "30:3", "ÖB"],
+  rooms: ["26", "27", "28", "29:1", "29:2", "30:1", "30:2", "30:3", "30 ÖB"],
   color: "red-bg",
   orderColor: "red-order",
 },
 {
   name: "Blå",
-  rooms: ["21:1", "21:2", "21:3", "22:1", "22:2", "23", "24", "25", "ÖB"],
+  rooms: ["21:1", "21:2", "21:3", "22:1", "22:2", "23", "24", "25", "25 ÖB"],
   color: "blue-bg",
   orderColor: "blue-order",
 }];
 
 
 const mackaOptions = [{
-  name: "Hård Bröd",
+  name: "Hårt Bröd",
   image: "hardbread.jpg",
   group: true,
 },
 {
-  name: "Mjuk Bröd",
+  name: "Mjukt Bröd",
   image: "softbread.jpg",
   group: true,
 },
@@ -69,7 +69,7 @@ const yogiOptions = [
     group: true,
   },
   {
-    name: "Müesli",
+    name: "Müsli",
     image: "musli.jpg",
     group: true,
   },
@@ -110,7 +110,7 @@ const coffeeOptions = [
     group: true,
   },
   {
-    name: "Sukketter",
+    name: "Suketter",
     image: "suketter.jpg",
     group: true,
   },
@@ -154,7 +154,7 @@ const menuItems = [
     options: yogiOptions,
   },
   {
-    name: "Yogurt",
+    name: "Yoghurt",
     image: "yoghurt.jpg",
     options: yogiOptions,
   },

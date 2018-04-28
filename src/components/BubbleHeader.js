@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './BubbleHeader.css';
 import { bubbles } from '../model/Model';
-import { Order } from '../model/Order';
 
 export default class BubbleHeader extends Component {
   constructor(props) {
@@ -19,20 +18,20 @@ export default class BubbleHeader extends Component {
   }
 
   render() {
-    const { currentBubble, currentRoom, order, onCleanBubble } = this.props;
+    const { currentBubble, currentRoom, order } = this.props;
 
     const listItems = bubbles[currentBubble].rooms.map( ( bbl => {
       var i = 0;
       return (bbl) => {
         var className = 'room';
 
-        if( order.getOrdered( bbl ) && i==currentRoom ) {
+        if( order.getOrderState( bbl )!==order.OrderState.START && i===currentRoom ) {
           className += ' room-active-ordered';
         } else {
-          if( order.getOrdered( bbl ) ) {
+          if( order.getOrderState( bbl )!==order.OrderState.START ) {
             className += ' room-ordered';
           }
-          if( i==currentRoom ) {
+          if( i===currentRoom ) {
             className += ' room-active';
           }
         }
@@ -40,13 +39,19 @@ export default class BubbleHeader extends Component {
           className={className}
           key={i}
           onClick={ this.onUpdateRoom.bind(this,i) }
-        >{bbl}</li>;
+        >
+        <div>{bbl}</div>
+        {
+          order.getOrderState( bbl )===order.OrderState.READY &&
+          <div className="notification-dot">
+          <i className="fas fa-circle"/>
+          </div>
+        }
+        </li>;
         i++;
         return revVal;
       }
     })());
-
-    let className
 
     return (
       <header className="bubble-header">

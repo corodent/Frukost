@@ -1,5 +1,4 @@
 import { bubbles, menuItems, COMMENTS_PROP } from './Model';
-import { Order } from './Order';
 
 // Client ID and API key from the Developer Console
 // var CLIENT_ID = '542434086778-e1uvvh9rdq8c21si7p2d81tech4pahei.apps.googleusercontent.com';
@@ -24,6 +23,8 @@ const RED_SHEET_ID   = 717808041;
 const START_ROW = 2;
 const START_COLUMN = "B";
 const STATUS_ROW = 30;
+const ORDERED_TEXT = 'Beställt';
+const KLAR_TEXT = '✔';
 
 const spreadSheetRows = [
   'Macka 1',
@@ -53,7 +54,8 @@ const spreadSheetRows = [
   'Te',
   'söt',
   'mjölk',
-  'Kommentar'
+  'Kommentar',
+  'Klar'
 ];
 
 /**
@@ -82,43 +84,6 @@ function initClient( onSigninChanged ) {
       cb(window.gapi.auth2.getAuthInstance().isSignedIn.get());
     });
   }
-}
-
-/**
- *  Called when the signed in status changes, to update the UI
- *  appropriately. After a sign-in, the API is called.
- */
-function updateSigninStatus(isSignedIn) {
-  if (isSignedIn) {
-    console.log("signed in");
-  } else {
-    console.log("not signed in");
-//    window.gapi.auth2.getAuthInstance().signIn();
-  }
-}
-
-function isSignedIn() {
-  return window.gapi.auth2.getAuthInstance().isSignedIn.get();
-}
-
-function updateCell( sheet, cell, value ) {
-  const range = `${sheet}!${cell}:${cell}`;
-  const params = {
-    spreadsheetId: SPREADSHEET_ID,
-    range: range,
-    valueInputOption: "USER_ENTERED",
-  };
-  const valueRangeBody = {
-    range: range,
-    majorDimension: "ROWS",
-    values: [[value]],
-  };
-  window.gapi.client.sheets.spreadsheets.values.update(params, valueRangeBody)
-  .then(function(response) {
-    console.log(response);
-  }, function(response) {
-    console.log('Error: ' + response.result.error.message);
-  });
 }
 
 function updateRange( sheet, startCell, endCell, values ) {
@@ -172,8 +137,9 @@ function placeOrder( bubble, room, order ) {
 
   let cellData = order.get( room, COMMENTS_PROP, COMMENTS_PROP ) || null;
   row.push( [cellData] );
+  row.push( [ORDERED_TEXT] );
 
-  const bubbleNumber = bubbles.findIndex( e => e.name==bubble );
+  const bubbleNumber = bubbles.findIndex( e => e.name===bubble );
   const roomNumber = bubbles[bubbleNumber].rooms.indexOf(room);
   const column = String.fromCharCode( START_COLUMN.charCodeAt(0) + roomNumber );
   const startCell = `${column}${START_ROW}`;
@@ -207,9 +173,25 @@ function signIn() {
   });
 }
 
-function readSheetState() {
-  console.log( 'readSheetState' );
+function mergeState( sheetState, order ) {
+  Object.entries(sheetState).forEach(
+    ([key,value]) => {
+      const bubble = bubbles.find( element => element.name===key );
+      for( var i = 0 ; i<bubble.rooms.length ; i++ ) {
+        if( i<value.length && value[i]===KLAR_TEXT ) {
+          order.setOrderState( bubble.rooms[i], order.OrderState.READY );
+        }
+        if( ( i<value.length && value[i]==='' ) || i>=value.length ) {
+          if( order.getOrderState(bubble.rooms[i])!=order.OrderState.START ) {
+            order.cleanOrder(bubble.rooms[i]);
+          }
+        }
+      }
+    }
+  );
+}
 
+function readSheetState() {
   const ranges = bubbles.map( elem => {
     const width = elem.rooms.length;
     const endColumn = String.fromCharCode( START_COLUMN.charCodeAt(0) + width - 1 );
@@ -221,21 +203,19 @@ function readSheetState() {
     ranges: ranges
   };
 
-  const re = /\'(.*)\'/;
+  const re = /'(.*)'/;
 
   return window.gapi.client.sheets.spreadsheets.values.batchGet(params)
   .then( response => {
     var result = {};
     response.result.valueRanges.forEach( elem => {
-      console.log(`elem.range ${elem.range}`);
+//      console.log(`elem.range ${elem.range}`);
       let a = re.exec( elem.range );
       if( a!=null ) {
         result[a[1]] = elem.values ? elem.values[0] : [];
       }
     });
     return result;
-  }, response => {
-    console.log( `ERROR readSheetState ${response.result.error.message}`);
   });
 }
 
@@ -245,4 +225,5 @@ export {
   resetBubble,
   signIn,
   readSheetState,
+  mergeState,
 }

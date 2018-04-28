@@ -28,13 +28,13 @@ class MenuItem extends Component {
   }
 
   render() {
-    const { item, onItemChanged, orderOptions } = this.props;
+    const { item, orderOptions } = this.props;
     const options = item.options &&
       item.options.map(
         (option => {
           var i = 0;
           return option => {
-            const enabled = (typeof orderOptions!=='undefined') && orderOptions[option.name]==true;
+            const enabled = (typeof orderOptions!=='undefined') && orderOptions[option.name]===true;
             return <MenuOption
                 key={i}
                 optionid={i++}
@@ -45,11 +45,7 @@ class MenuItem extends Component {
           }
       })()
     );
-    const enabled = (typeof orderOptions!=='undefined') && orderOptions[item.name]==true;
-    let clss = 'menu-main-option';
-    if( enabled ) {
-      clss += ' enabled';
-    }
+    const enabled = (typeof orderOptions!=='undefined') && orderOptions[item.name]===true;
     return(
       <div className="menu-item">
         {
@@ -58,12 +54,6 @@ class MenuItem extends Component {
                         enabled={enabled}
                         onItemChanged={this.onItemChanged.bind(this,item,item)}
                       />
-/*
-                <div className={clss} onClick={this.onItemChanged.bind(this,item,item)} option={item}>
-                  <img src={`images/${item.image}`} alt={item.name} height="100" width="100" />
-                  <p>{ item.name }</p>
-                </div>
-*/
         }
         { options }
       </div>
@@ -83,7 +73,6 @@ export default class Menu extends Component {
 
   render() {
     const {
-      currentBubble,
       onItemChanged,
       currentOrder,
       onCommentsChange } = this.props;

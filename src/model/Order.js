@@ -6,17 +6,17 @@ export function Order() {
   };
 
   this.get = function ( room, item, option ) {
-    let ret = false;
-    return this[room] && this[room][item] && this[room][item][option] || false;
+    return this[room] && this[room][item] && this[room][item][option] ?
+      this[room][item][option] : false;
   };
 
-  this.setOrdered = function ( room, ordered ) {
+  this.setOrderState = function ( room, orderState ) {
     this[room] = this[room] || {};
-    this[room].ordered = ordered;
+    this[room].ordered = orderState;
   }
 
-  this.getOrdered = function ( room ) {
-    return this[room] && this[room].ordered || false;
+  this.getOrderState = function ( room ) {
+    return this[room] && typeof this[room].ordered!=='undefined' ? this[room].ordered : this.OrderState.START;
   }
 
   this.cleanOrder = function ( room ) {
@@ -26,4 +26,10 @@ export function Order() {
   this.toString = function () {
     return JSON.stringify( this );
   };
+
+  this.OrderState = Object.freeze({
+    START: 1,
+    ORDERED: 2,
+    READY: 3
+  });
 }
