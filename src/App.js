@@ -70,7 +70,7 @@ class App extends Component {
     if( this.timerID!==0 ) {
       clearTimeout( this.timerID );
     }
-    setTimeout( this.syncServerState, 10000 );
+    this.timerID = setTimeout( this.syncServerState, 10000 );
 
     console.log( 'App.syncServerState');
 
@@ -119,10 +119,21 @@ class App extends Component {
   }
 
   onItemChanged(item, option) {
+    console.log( `onItemChanged: ${item.name} ${option.name}`)
     this.setState( (prevState) => {
       let { order, currentRoom, currentBubble } = prevState;
       const roomName = bubbles[currentBubble].rooms[currentRoom];
+
       const checked = order.get( roomName, item.name, option.name );
+
+      // clear out the other items in the group for the radio button effect
+      if( !checked && option.group ) {
+        console.log( `uh oh ... need to deal with ${option.name}`);
+        const groupOpts = item.options.filter( elem => elem.group );
+        groupOpts.forEach( e => {
+          order.set( roomName, item.name, e.name, false );
+        })
+      }
       order.set( roomName, item.name, option.name, !checked );
 
       // add logic to set / unset the hidden menu items here.
@@ -133,7 +144,6 @@ class App extends Component {
         }, false );
         order.set( roomName, item.name, item.name, anyOptionSet );
       }
-      console.log( order.toString() );
       return { order: order };
     });
   }
@@ -186,10 +196,7 @@ class App extends Component {
   }
 
   toggleInfo() {
-
-//    this.setState( prevState => {isInfoVisible: !prevState.isInfoVisible});
     this.setState( prevState => {
-      console.log(`toggleInfo ${prevState.isInfoVisible}`);
       return { isInfoVisible: !prevState.isInfoVisible}
     });
   }
@@ -202,8 +209,6 @@ class App extends Component {
       signInState,
       isInfoVisible } = this.state;
     const roomName = bubbles[currentBubble].rooms[currentRoom];
-
-    console.log( 'App.render' );
 
     if( signInState===SignInState.LOADING ) {
       return <p>Laddar...</p>

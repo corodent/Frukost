@@ -22,7 +22,7 @@ const RED_SHEET_ID   = 717808041;
 
 const START_ROW = 2;
 const START_COLUMN = "B";
-const STATUS_ROW = 30;
+const STATUS_ROW = 34;
 const ORDERED_TEXT = 'Beställt';
 const KLAR_TEXT = '✔';
 

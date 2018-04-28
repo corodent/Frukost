@@ -58,9 +58,7 @@ export default class BubbleHeader extends Component {
       <header className="bubble-header">
         <div className="title-bar">
           <select name="Bubla" onChange={this.onUpdateBubble} className={bubbles[currentBubble].color}>
-            <option value="0">Grön Bubbla</option>
-            <option value="1">Röd Bubbla</option>
-            <option value="2">Blå Bubbla</option>
+            { bubbles.map( (e,i) => <option value={i}>{e.name} Bubbla</option> )}
           </select>
             <div className="title-container">
             <span className="title">Frukostbeställning till köksan</span>

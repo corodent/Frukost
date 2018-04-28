@@ -67,12 +67,12 @@ const yogiOptions = [
   {
     name: "Flingor",
     image: "flingor.jpg",
-    group: true,
+    group: false,
   },
   {
     name: "Müsli",
     image: "musli.jpg",
-    group: true,
+    group: false,
   },
 ];
 
@@ -101,6 +101,10 @@ const grotOptions = [
 
 const coffeeOptions = [
   {
+    name: "Mjölk",
+    image: "milk.jpg",
+  },
+  {
     name: "Socker",
     image: "socker.jpg",
     group: true,
@@ -114,10 +118,6 @@ const coffeeOptions = [
     name: "Suketter",
     image: "suketter.jpg",
     group: true,
-  },
-  {
-    name: "Mjölk",
-    image: "milk.jpg",
   },
 ];
 
