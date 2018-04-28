@@ -92,8 +92,8 @@ export default class Menu extends Component {
           );
         })
       }
-        <div id="comments-container">
-          <div id="comments-label">Kommentar</div>
+        <div className="comments-container">
+          <div className="comments-label">Skriv din kommentar här.</div>
           <input
             type="text"
             name="comments"

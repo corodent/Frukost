@@ -43,16 +43,18 @@ class App extends Component {
     this.onClientLoad = this.onClientLoad.bind(this);
     this.onSigninChanged = this.onSigninChanged.bind(this);
     this.onSignin = this.onSignin.bind(this);
-    this.testSomething = this.testSomething.bind(this);
+//    this.testSomething = this.testSomething.bind(this);
     this.syncServerState = this.syncServerState.bind(this);
     this.componentWillUnmount = this.componentWillUnmount.bind(this);
 
     this.timerID = 0;
   }
 
+/*
   testSomething() {
     this.syncServerState();
   }
+*/
 
   componentDidMount() {
     console.log( 'App.componentDidMount')
@@ -219,7 +221,6 @@ class App extends Component {
             room={roomName}
             order={order}
             onClick={this.onOrder}/>
-          <button onClick={this.testSomething}>Test</button>
         </div>
       );
     }

@@ -1,5 +1,4 @@
 .bubble-header {
-  border: 1px solid #ccc;
 }
 
 .bubble-header ul {
@@ -16,7 +15,8 @@
   border-radius: 4px;
   font-size: 12px;
   font-weight: bold;
-  height: 29px;
+  height: 40px;
+  width: 120px;
   margin: 10px;
 }
 
@@ -76,7 +76,7 @@
   color: #707070;
   flex-grow: 1;
   padding-left: 200px;
-  padding-top: 14px;
+  padding-top: 16px;
 }
 
 .green-bg {

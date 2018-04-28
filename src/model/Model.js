@@ -6,17 +6,18 @@ const bubbles = [
   orderColor: "green-order",
 },
 {
-  name: "Röd",
-  rooms: ["26", "27", "28", "29:1", "29:2", "30:1", "30:2", "30:3", "30 ÖB"],
-  color: "red-bg",
-  orderColor: "red-order",
-},
-{
   name: "Blå",
   rooms: ["21:1", "21:2", "21:3", "22:1", "22:2", "23", "24", "25", "25 ÖB"],
   color: "blue-bg",
   orderColor: "blue-order",
-}];
+},
+{
+  name: "Röd",
+  rooms: ["26", "27", "28", "29:1", "29:2", "30:1", "30:2", "30:3", "30 ÖB"],
+  color: "red-bg",
+  orderColor: "red-order",
+}
+];
 
 
 const mackaOptions = [{
