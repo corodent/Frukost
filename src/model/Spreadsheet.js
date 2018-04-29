@@ -1,9 +1,5 @@
 import { bubbles, menuItems, COMMENTS_PROP } from './Model';
 
-// Client ID and API key from the Developer Console
-// var CLIENT_ID = '542434086778-e1uvvh9rdq8c21si7p2d81tech4pahei.apps.googleusercontent.com';
-var CLIENT_ID = '1012841776473-2lhkldc78e7q274b4ldjdia58f7t857r.apps.googleusercontent.com';
-
 // Array of API discovery doc URLs for APIs used by the quickstart
 var DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
 
@@ -13,12 +9,8 @@ var SCOPES = "https://www.googleapis.com/auth/spreadsheets";
 
 // Copy of Digital Breakfastlist WIP in my Google Drive
 const SPREADSHEET_ID = '1NpGatbVywS9VuF_1KkRXcjVYhw3z6QnGZ5uApu9j_kY';
-
-/*
-const GREEN_SHEET_ID = 0;
-const BLUE_SHEET_ID  = 289210114;
-const RED_SHEET_ID   = 717808041;
-*/
+// Client ID and API key from the Developer Console
+var CLIENT_ID = '1012841776473-2lhkldc78e7q274b4ldjdia58f7t857r.apps.googleusercontent.com';
 
 const START_ROW = 2;
 const START_COLUMN = "B";
@@ -38,11 +30,15 @@ const spreadSheetRows = [
   'Skinka',
   'Grönt',
   'Fil',
-  '',
+  'sylt',
+  'flingor',
+  'muesli',
   'Yoghurt',
-  '',
+  'sylt',
+  'flingor',
+  'muesli',
   'Gröt',
-  '',
+  'sylt',
   'Ägg',
   '',
   'Juice',
@@ -152,11 +148,20 @@ function resetBubble( bubbleNumber ) {
   const width = bubbles[bubbleNumber].rooms.length;
   const row = Array( width  ).fill('');
   const values = Array( spreadSheetRows.length ).fill(row);
-  console.log( values );
 
   const endColumn = String.fromCharCode( START_COLUMN.charCodeAt(0) + width - 1 );
   const startCell = `${START_COLUMN}${START_ROW}`;
   const endCell = `${endColumn}${values.length+START_ROW-1}`;
+  return updateRange( bubbles[bubbleNumber].name, startCell, endCell, values );
+}
+
+function resetRoom( bubbleNumber, roomNumber ) {
+  console.log( `resetRoom ${bubbleNumber} ${roomNumber}`);
+  const values = Array( spreadSheetRows.length ).fill(['']);
+  const column = String.fromCharCode( START_COLUMN.charCodeAt(0) + roomNumber );
+  const startCell = `${column}${START_ROW}`;
+  const endCell = `${column}${values.length+START_ROW-1}`;
+  console.log( `updateRange( ${bubbles[bubbleNumber].name} ${startCell} ${endCell})`);
   return updateRange( bubbles[bubbleNumber].name, startCell, endCell, values );
 }
 
@@ -226,4 +231,5 @@ export {
   signIn,
   readSheetState,
   mergeState,
+  resetRoom,
 }

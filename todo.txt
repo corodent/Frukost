@@ -1,6 +1,5 @@
-- new images
-- Add rensa room to the room
-- Error UI on the rensa
+- extract all the external config items to a separate file
+- write technical notes
 
 Spreadsheet:
 - button to clear bubbles
@@ -48,3 +47,6 @@ x- Better drop down - make it bigger
 x - BUG: top of the menuoption buttons seems cut off
 x - put the text in an i bubble - 10pt text
 X - Error UI in the order
+x - new images
+x - Add rensa room to the room
+x - Error UI on the rensa

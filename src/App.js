@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import BubbleHeader from './components/BubbleHeader';
-import OrderButton from './components/OrderButton';
+import ActionButton from './components/ActionButton';
 import ErrorAlert from './components/ErrorAlert';
 import {
   handleClientLoad,
@@ -10,6 +10,7 @@ import {
   signIn,
   readSheetState,
   mergeState,
+  resetRoom,
 } from './model/Spreadsheet';
 import {
   bubbles,
@@ -50,6 +51,7 @@ class App extends Component {
     this.componentWillUnmount = this.componentWillUnmount.bind(this);
     this.toggleInfo = this.toggleInfo.bind(this);
     this.onCloseError = this.onCloseError.bind(this);
+    this.onRensaRoom = this.onRensaRoom.bind(this);
 
     this.timerID = 0;
   }
@@ -182,12 +184,32 @@ class App extends Component {
         bubbles[currentBubble].rooms.forEach( elem => {
           order.cleanOrder(elem);
         });
+        this.syncServerState();
         return { order: order };
       });
     }, response => {
       console.log( `Error: ${response.result.error.message}`);
     }
     );
+  }
+
+  onRensaRoom() {
+    const { currentBubble, currentRoom } = this.state;
+    console.log( `onRensaRoom( ${bubbles[currentBubble].name}, ${bubbles[currentBubble].rooms[currentRoom]} )`)
+    resetRoom( currentBubble, currentRoom )
+    .then( response => {
+      console.log( response );
+      this.setState( prevState => {
+        let { currentBubble, currentRoom, order } = prevState;
+        order.cleanOrder( bubbles[currentBubble].rooms[currentRoom] );
+        order.setOrderState( bubbles[currentBubble].rooms[currentRoom], order.OrderState.START );
+        return { order: order };
+      })
+    }, response => {
+      const errorText = `Error: ${response.result.error.message}`;
+      console.log(errorText);
+      this.setState({errorText: errorText});
+    });
   }
 
   onCommentsChange( event ) {
@@ -248,10 +270,17 @@ class App extends Component {
             onItemChanged={this.onItemChanged}
             onCommentsChange={this.onCommentsChange}
           />
-          <OrderButton
+          <ActionButton
             room={roomName}
             order={order}
-            onClick={this.onOrder}/>
+            onClick={this.onOrder}
+          />
+          <ActionButton
+            room={roomName}
+            text="RENSA"
+            onClick={this.onRensaRoom}
+            justify="right"
+          />
         </div>
       );
     }
