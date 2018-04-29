@@ -1,7 +1,7 @@
-- Add rensa room to the room
 - Error UI in the order
-- Error UI on the rensa
 - new images
+- Add rensa room to the room
+- Error UI on the rensa
 
 Spreadsheet:
 - button to clear bubbles

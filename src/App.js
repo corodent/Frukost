@@ -93,7 +93,8 @@ class App extends Component {
 
   onSigninChanged( isSignedIn ) {
     console.log( `onSigninChanged(${isSignedIn})`);
-    const signInState = isSignedIn ? SignInState.SIGNED_IN : SignInState.SIGNED_IN;
+    const signInState = isSignedIn ? SignInState.SIGNED_IN : SignInState.SIGNED_OUT;
+    console.log( `onSigninChanged(${isSignedIn}) -> ${signInState}`);
     this.setState({ signInState: signInState });
     if( signInState===SignInState.SIGNED_IN ) {
       this.syncServerState();
@@ -128,7 +129,6 @@ class App extends Component {
 
       // clear out the other items in the group for the radio button effect
       if( !checked && option.group ) {
-        console.log( `uh oh ... need to deal with ${option.name}`);
         const groupOpts = item.options.filter( elem => elem.group );
         groupOpts.forEach( e => {
           order.set( roomName, item.name, e.name, false );
