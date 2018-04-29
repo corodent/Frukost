@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import BubbleHeader from './components/BubbleHeader';
 import OrderButton from './components/OrderButton';
+import ErrorAlert from './components/ErrorAlert';
 import {
   handleClientLoad,
   placeOrder,
@@ -33,7 +34,8 @@ class App extends Component {
       currentRoom: 0,
       order: new Order(),
       signInState: SignInState.LOADING,
-      isInfoVisible: false
+      isInfoVisible: false,
+      errorText: null,
     };
     this.onUpdateCurrentBubble = this.onUpdateCurrentBubble.bind(this);
     this.onUpdateCurrentRoom = this.onUpdateCurrentRoom.bind(this);
@@ -47,6 +49,7 @@ class App extends Component {
     this.syncServerState = this.syncServerState.bind(this);
     this.componentWillUnmount = this.componentWillUnmount.bind(this);
     this.toggleInfo = this.toggleInfo.bind(this);
+    this.onCloseError = this.onCloseError.bind(this);
 
     this.timerID = 0;
   }
@@ -162,7 +165,9 @@ class App extends Component {
         return { order: order };
       })
     }, (response) => {
-      console.log('Error: ' + response.result.error.message);
+      const errorText = `Error: ${response.result.error.message}`;
+      console.log(errorText);
+      this.setState({errorText: errorText});
     });
   }
 
@@ -201,13 +206,19 @@ class App extends Component {
     });
   }
 
+  onCloseError() {
+    this.setState({errorText: null});
+  }
+
   render() {
     const {
       currentBubble,
       currentRoom,
       order,
       signInState,
-      isInfoVisible } = this.state;
+      isInfoVisible,
+      errorText,
+    } = this.state;
     const roomName = bubbles[currentBubble].rooms[currentRoom];
 
     if( signInState===SignInState.LOADING ) {
@@ -217,6 +228,10 @@ class App extends Component {
     } else {
       return (
         <div className="App">
+          <ErrorAlert
+            errorText={errorText}
+            onCloseError={this.onCloseError}
+          />
           <BubbleHeader
             currentBubble={currentBubble}
             currentRoom={currentRoom}
